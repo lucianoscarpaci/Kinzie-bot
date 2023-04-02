@@ -1,0 +1,4 @@
+.env
+.DS_Store
+src/chatgpt_bot/__pycache__/
+src/discord_bot/__pycache__/
