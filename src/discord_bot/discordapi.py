@@ -25,7 +25,7 @@ class MyClient(discord.Client):
 
         if command == '/ai' or command == '/bot' or command == '/chatgpt':
             bot_response = chatgpt_response(prompt=own_message)
-            await message.channel.send(f"Hey whats up: {bot_response}")
+            await message.channel.send(f"Hey whats up: {message.author.mention}, {bot_response}")
 
 intents = discord.Intents.default()
 intents.message_content = True
