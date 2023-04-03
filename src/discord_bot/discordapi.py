@@ -17,13 +17,13 @@ class MyClient(discord.Client):
             return
         command, own_message=None, None
 
-        for text in ['/ai','/bot','/chatgpt']:
+        for text in ['/ai','/bae']:
             if message.content.startswith(text):
                 command=message.content.split(' ')[0]
                 own_message=message.content.replace(text, '')
                 print(command, own_message)
 
-        if command == '/ai' or command == '/bae' or command == '/chatgpt':
+        if command == '/ai' or command == '/bae':
             bot_response = chatgpt_response(prompt=own_message)
             await message.channel.send(f"Hey boo {message.author.mention}, {bot_response}")
 
