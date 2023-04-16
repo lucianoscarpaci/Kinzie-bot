@@ -27,7 +27,7 @@ class MyClient(discord.Client):
         if command == '/g' or command == '/bae':
             bot_response = chatgpt_response(prompt=own_message)
             await message.channel.typing()
-            await asyncio.sleep(2)
+            await asyncio.sleep(1)
             await message.channel.send(f"Hey boo {message.author.mention}, {bot_response}")
 
 intents = discord.Intents.default()

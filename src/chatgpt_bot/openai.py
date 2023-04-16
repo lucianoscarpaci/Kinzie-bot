@@ -14,17 +14,19 @@ def chatgpt_response(prompt):
     while retry_count <= max_retries:
         try:
             # call openai api
-            response = openai.Completion.create(
+            response = openai.ChatCompletion.create(
                 # model type
-                model="text-davinci-003",
-                prompt=prompt,
+                model="gpt-3.5-turbo-0301",
+                messages=[
+                    {"role": "user", "content": prompt},
+                ],
                 temperature=1,
                 max_tokens=4000,
             )
             
             response_dict = response.get("choices")
             if response_dict and len(response_dict) > 0:
-                prompt_response = response_dict[0]["text"]
+                prompt_response = response_dict[0]["message"]["content"]
             return prompt_response
     
         except Exception:
