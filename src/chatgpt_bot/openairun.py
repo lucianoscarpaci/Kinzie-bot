@@ -15,7 +15,11 @@ response = openai.ChatCompletion.create(
     max_tokens=4000,
 )
 
-print(response["choices"][0]["message"]["content"])
+response_dict = response.get("choices")
+if response_dict and len(response_dict) > 0:
+    prompt_response = response_dict[0]["message"]["content"]
+
+print(prompt_response)
             
 
 
