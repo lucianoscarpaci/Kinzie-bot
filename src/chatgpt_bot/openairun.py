@@ -11,7 +11,8 @@ response = openai.ChatCompletion.create(
     messages=[
         {"role": "user", "content": "Explain functional programming"},
     ],
-    temperature=0,
+    temperature=1,
+    max_tokens=4000,
 )
 
 print(response["choices"][0]["message"]["content"])
