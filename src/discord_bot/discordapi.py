@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 import discord
 import os
 import asyncio
-from src.chatgpt_bot.openai import chatgpt_response
+from src.chatgpt_bot.openairun import chatgpt_response
 load_dotenv()
 
 
@@ -25,7 +25,7 @@ class MyClient(discord.Client):
                 print(command, own_message)
 
         if command == '/g' or command == '/bae':
-            bot_response = chatgpt_response(prompt=own_message)
+            bot_response = chatgpt_response(messages=[{"role": "user", "content": own_message}])
             await message.channel.typing()
             await asyncio.sleep(2)
             await message.channel.send(f"Hey boo {message.author.mention}, {bot_response}")
