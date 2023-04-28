@@ -18,13 +18,13 @@ class MyClient(discord.Client):
             return
         command, own_message=None, None
 
-        for text in ['Kinzie']:
+        for text in ['Kinzie', 'kinzie']:
             if message.content.startswith(text):
                 command=message.content.split(' ')[0]
                 own_message=message.content.replace(text, '')
                 print(command, own_message)
 
-        if command == 'Kinzie':
+        if command == 'Kinzie' or command == 'kinzie':
             bot_response = chatgpt_response(prompt=own_message)
             await message.channel.typing()
             await asyncio.sleep(1)
