@@ -2,10 +2,9 @@ from dotenv import load_dotenv
 import discord
 import os
 import asyncio
-import requests
-import json
 from src.chatgpt_bot.openai import chatgpt_response
 from src.giphy_bot.giphy import get_memes
+from src.giphy_bot.giphy import get_cat_memes
 load_dotenv()
 
 
@@ -39,6 +38,10 @@ class MyClient(discord.Client):
         if message.content.startswith('$meme'):
             meme_url = get_memes()
             await message.channel.send(f"{meme_url}")
+        
+        if message.content.startswith('$cats'):
+            cats_meme_url = get_cat_memes()
+            await message.channel.send(f"{cats_meme_url}")
 
 
     
