@@ -3,9 +3,9 @@ import discord
 import os
 import asyncio
 from src.chatgpt_bot.openai import chatgpt_response
-from src.giphy_bot.giphy import get_memes
-from src.giphy_bot.giphy import get_cat_memes
-from src.giphy_bot.giphy import get_trippy_memes
+from src.giphy_bot.giphy import gif_response
+from src.giphy_bot.giphy import sticker_response
+
 load_dotenv()
 
 
@@ -36,17 +36,10 @@ class MyClient(discord.Client):
             await asyncio.sleep(1)
             await message.channel.send(f"{bot_response}")
         
-        if message.content.startswith('$meme'):
-            meme_url = get_memes()
-            await message.channel.send(f"{meme_url}")
-        
-        if message.content.startswith('$cats'):
-            cats_meme_url = get_cat_memes()
-            await message.channel.send(f"{cats_meme_url}")
-        
-        if message.content.startswith('$trippy'):
-            trippy_meme_url = get_trippy_memes()
-            await message.channel.send(f"{trippy_meme_url}")
+        if "Giphy " in message.content:
+            await message.channel.send(gif_response(message.content.replace("Giphy ", "")))
+        elif "sticker " in message.content:
+            await message.channel.send(sticker_response(message.content.replace("sticker ", "")))
 
 
     

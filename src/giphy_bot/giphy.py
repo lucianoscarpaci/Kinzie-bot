@@ -1,25 +1,49 @@
 from dotenv import load_dotenv
 import os
-import requests
-import json
+import random
+import giphy_client
+from giphy_client.rest import ApiException
 
 load_dotenv()
 
-giphy_token = os.getenv('GIPHY_URL')
-giphy_token_2 = os.getenv('GIPHY_CATS_URL')
-giphy_token_3 = os.getenv('GIPHY_TRIPPY_URL')
+giphy_token = os.getenv('GIPHY_API_KEY')
 
-def get_memes():
-    url = giphy_token
-    giphy_response = requests.get(url)
-    return json.loads(giphy_response.text)['data']['url']
+api_instance = giphy_client.DefaultApi()
 
-def get_cat_memes():
-    cats_url = giphy_token_2
-    giphy_response = requests.get(cats_url)
-    return json.loads(giphy_response.text)['data']['url']
+def search_gifs(query):
+    try:
+        return api_instance.gifs_search_get(giphy_token, query,
+                                            limit=5, rating='r',
+                                            lang=["en"]
+                                               )
+    except ApiException as e:
+        return "Exception when calling DefaultApi->gifs_search_get: %s\n" % e
+    
+def gif_response(emotion):
+    try:
+        gifs = search_gifs(emotion)
+        lst = list(gifs.data)
+        gif = random.choices(lst)
+        return gif[0].url
+    except IndexError:
+        return "Cannot find anything similar. Try again!"
 
-def get_trippy_memes():
-    trippy_url = giphy_token_3
-    giphy_response = requests.get(trippy_url)
-    return json.loads(giphy_response.text)['data']['url']
+def search_stickers(query):
+    try:
+        return api_instance.stickers_search_get(giphy_token, query,
+                                            limit=5, rating='r',
+                                            lang=["en"])
+
+    except ApiException as e:
+        return "Exception when calling DefaultApi->stickers_search_get: %s\n" % e
+    
+def sticker_response(emotion):
+    try:
+        stickers = search_stickers(emotion)
+        lst = list(stickers.data)
+        sticker = random.choices(lst)
+
+        return sticker[0].url
+    except IndexError:
+        return "Cannot find anything similar. Try again!"
+    
