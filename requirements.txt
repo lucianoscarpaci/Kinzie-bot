@@ -2,3 +2,5 @@ discord.py==2.1.0
 openai==0.27.4
 python-dotenv==0.21.0
 requests==2.25.1
+giphy_client==1.0.0
+emoji==2.2.0
