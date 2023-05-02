@@ -4,14 +4,19 @@ import os
 import asyncio
 import random
 import emoji
+import json
+import requests
 from src.chatgpt_bot.openai import chatgpt_response
 from src.giphy_bot.giphy import gif_response
 from src.giphy_bot.giphy import sticker_response
 
+
 load_dotenv()
 discord_token = os.getenv('DISCORD_TOKEN')
+url_token = os.getenv('GIPHY_API_URL')
 emoji_arr = []
 all_emoji = [emoji.emojize(x) for x in emoji.EMOJI_DATA]
+giphy_attachments = ['mov','gif']
 
 
 class MyClient(discord.Client):
@@ -49,6 +54,14 @@ class MyClient(discord.Client):
                 result = ''.join(emoji_arr)
                 result = result[-5:]
             await message.channel.send(result)
+        # get if attachment is a .mov file or .gif file
+        elif any(x in message.attachments[0].filename for x in giphy_attachments):
+            meme_url = url_token
+            response = requests.get(meme_url)
+            response = json.loads(response.text)["data"]["url"]
+            await message.channel.send(response)
+
+
 
 
     

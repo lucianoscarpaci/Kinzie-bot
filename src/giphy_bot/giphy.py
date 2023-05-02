@@ -19,6 +19,7 @@ def search_gifs(query):
     except ApiException as e:
         return "Exception when calling DefaultApi->gifs_search_get: %s\n" % e
     
+    
 def gif_response(emotion):
     try:
         gifs = search_gifs(emotion)
@@ -42,7 +43,6 @@ def sticker_response(emotion):
         stickers = search_stickers(emotion)
         lst = list(stickers.data)
         sticker = random.choices(lst)
-
         return sticker[0].url
     except IndexError:
         return "Cannot find anything similar. Try again!"
