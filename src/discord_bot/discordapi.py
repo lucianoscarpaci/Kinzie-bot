@@ -6,6 +6,7 @@ import random
 import emoji
 import json
 import requests
+import webbrowser
 from src.chatgpt_bot.openai import chatgpt_response
 from src.giphy_bot.giphy import gif_response
 from src.giphy_bot.giphy import sticker_response
@@ -55,11 +56,22 @@ class MyClient(discord.Client):
                 result = result[-5:]
             await message.channel.send(result)
         # get if attachment is a .mov file or .gif file
-        elif any(x in message.attachments[0].filename for x in giphy_attachments):
-            meme_url = url_token
-            response = requests.get(meme_url)
-            response = json.loads(response.text)["data"]["url"]
-            await message.channel.send(response)
+        if message.attachments:
+            if any(x in message.attachments[0].filename for x in giphy_attachments):
+                meme_url = url_token
+                response = requests.get(meme_url)
+                response = json.loads(response.text)["data"]["url"]
+                await message.channel.send(response)
+            else:
+                print("There is no attachment")
+        
+        if message.content.startswith("Search"):
+            query = message.content[7:]
+            query_string = 'https://www.google.com/search?q=' + '+'.join(query.split())
+            
+            await message.channel.send(webbrowser.open_new_tab(query_string))
+
+
 
 
 
