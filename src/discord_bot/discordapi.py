@@ -6,7 +6,6 @@ import random
 import emoji
 import json
 import requests
-import webbrowser
 from src.chatgpt_bot.openai import chatgpt_response
 from src.giphy_bot.giphy import gif_response
 from src.giphy_bot.giphy import sticker_response
@@ -67,9 +66,8 @@ class MyClient(discord.Client):
         
         if message.content.startswith("Search"):
             query = message.content[7:]
-            query_string = 'https://www.google.com/search?q=' + '+'.join(query.split())
-            
-            await message.channel.send(webbrowser.open_new_tab(query_string))
+            query_string = 'https://duckduckgo.com/?q=' + '+'.join(query.split())
+            await message.channel.send(query_string)
 
 
 
