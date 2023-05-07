@@ -6,6 +6,8 @@ import random
 import emoji
 import json
 import requests
+import pytz
+import datetime
 from src.chatgpt_bot.openai import chatgpt_response
 from src.giphy_bot.giphy import gif_response
 from src.giphy_bot.giphy import sticker_response
@@ -13,6 +15,7 @@ from src.giphy_bot.giphy import sticker_response
 
 load_dotenv()
 discord_token = os.getenv('DISCORD_TOKEN')
+discord_user_id = os.getenv('USER_ID')
 url_token = os.getenv('GIPHY_API_URL')
 emoji_arr = []
 all_emoji = [emoji.emojize(x) for x in emoji.EMOJI_DATA]
@@ -22,6 +25,17 @@ giphy_attachments = ['mov','gif']
 class MyClient(discord.Client):
     async def on_ready(self):
         print("login successful, you are: ", self.user)
+
+        # set the timezone to US Eastern Time
+        est_tz = pytz.timezone('US/Eastern')
+        # set the current time in EST
+        now = datetime.datetime.now(tz=est_tz)
+        # at a specific time send a message
+        if now.hour == 17 and now.minute == 41:
+            # get the user and create a DM to user
+            user = await client.fetch_user(discord_user_id)
+            channel = await user.create_dm()
+            await channel.send('This is your reminder')
     
     
     
