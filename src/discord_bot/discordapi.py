@@ -26,18 +26,35 @@ class MyClient(discord.Client):
     async def on_ready(self):
         print("login successful, you are: ", self.user)
 
+        # start the background task to check the time
+        client.loop.create_task(self.check_time())
+
+    async def check_time(self):
+
         # set the timezone to US Eastern Time
         est_tz = pytz.timezone('US/Eastern')
-        # set the current time in EST
-        now = datetime.datetime.now(tz=est_tz)
-        # at a specific time send a message
-        if now.hour == 17 and now.minute == 41:
+
+        # set target time to 9 AM 
+        target_time = datetime.time(hour=9)
+
+        while True:
+            target_date = datetime.datetime.now(tz=est_tz).replace(hour=target_time.hour,
+                                                                   minute=target_time.minute,
+                                                                   second=target_time.second,
+                                                                   microsecond=0)
+
+            # If target time has already passed for today, set target date to tomorrow's date with target time
+            if datetime.datetime.now(tz=est_tz) >= target_date:
+                target_date += datetime.timedelta(days=1)
+
+            # Wait until target date and time
+            await asyncio.sleep((target_date - datetime.datetime.now(tz=est_tz)).total_seconds())
+            
+            # trigger the action  
             # get the user and create a DM to user
             user = await client.fetch_user(discord_user_id)
             channel = await user.create_dm()
-            await channel.send('This is your reminder')
-    
-    
+            await channel.send('Good Morning!')
     
     async def on_message(self, message):
         print(message.content)
