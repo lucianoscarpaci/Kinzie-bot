@@ -8,7 +8,8 @@ import json
 import requests
 import pytz
 import datetime
-from src.chatgpt_bot.openai import chatgpt_response
+from src.chatgpt_bot.openai import turbo_response
+from src.chatgpt_bot.openai import chat_response
 from src.giphy_bot.giphy import gif_response
 from src.giphy_bot.giphy import sticker_response
 
@@ -62,17 +63,30 @@ class MyClient(discord.Client):
             return
         command, own_message=None, None
 
-        for text in ['Kinzie', 'kinzie']:
+        for text in ['Turbo', 'turbo']:
             if message.content.startswith(text):
                 command=message.content.split(' ')[0]
                 own_message=message.content.replace(text, '')
                 print(command, own_message)
 
-        if command == 'Kinzie' or command == 'kinzie':
-            bot_response = chatgpt_response(prompt=own_message)
+        if command == 'Turbo' or command == 'turbo':
+            bot_response = turbo_response(prompt=own_message)
             await message.channel.typing()
             await asyncio.sleep(1)
             await message.channel.send(f"{bot_response}")
+
+        for txt in ['Kinzie', 'kinzie']:
+            if message.content.startswith(txt):
+                command=message.content.split(' ')[0]
+                own_message=message.content.replace(txt, '')
+                print(command, own_message)
+
+        if command == 'Kinzie' or command == 'kinzie':
+            text_response = chat_response(prompt=own_message)
+            await message.channel.typing()
+            await asyncio.sleep(1)
+            await message.channel.send(f"{text_response}")
+
         
         if "Giphy " in message.content:
             await message.channel.send(gif_response(message.content.replace("Giphy ", "")))
