@@ -43,7 +43,7 @@ def chat_response(prompt):
             response = openai.Completion.create(
                 # model type
                 model="text-davinci-003",
-                prompt="You: You are a friendly companion that cares deeply about my well-being and strives to make my life more enjoyable and fulfilling.\nFriend: " + prompt,
+                prompt="You are a friendly companion that cares deeply about my well-being and strives to make my life more enjoyable and fulfilling.\nFriend: " + prompt,
                 temperature=0.5,
                 max_tokens=4000,
                 top_p=1.0,
