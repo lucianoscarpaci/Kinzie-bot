@@ -57,7 +57,8 @@ class MyClient(discord.Client):
             # get the user and create a DM to user
             user = await client.fetch_user(discord_user_id)
             channel = await user.create_dm()
-            await channel.send('Good Morning!')
+            text_response = chat_response(prompt="Kinzie good morning!")
+            await channel.send(f"{text_response}")
     
     async def on_message(self, message):
         print(message.content)
@@ -65,25 +66,25 @@ class MyClient(discord.Client):
             return
         command, own_message=None, None
 
-        for text in ['Turbo', 'turbo']:
+        for text in ['kinzie', 'bot']:
             if message.content.startswith(text):
                 command=message.content.split(' ')[0]
                 own_message=message.content.replace(text, '')
                 print(command, own_message)
 
-        if command == 'Turbo' or command == 'turbo':
+        if command == 'kinzie' or command == 'bot':
             bot_response = turbo_response(prompt=own_message)
             await message.channel.typing()
             await asyncio.sleep(1)
             await message.channel.send(f"{bot_response}")
 
-        for txt in ['Kinzie', 'kinzie']:
+        for txt in ['Kinzie', 'chat']:
             if message.content.startswith(txt):
                 command=message.content.split(' ')[0]
                 own_message=message.content.replace(txt, '')
                 print(command, own_message)
 
-        if command == 'Kinzie' or command == 'kinzie':
+        if command == 'Kinzie' or command == 'chat':
             text_response = chat_response(prompt=own_message)
             await message.channel.typing()
             await asyncio.sleep(1)
