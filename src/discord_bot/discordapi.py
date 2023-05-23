@@ -18,7 +18,6 @@ load_dotenv()
 discord_token = os.getenv('DISCORD_TOKEN')
 discord_user_id = os.getenv('USER_ID')
 url_token = os.getenv('GIPHY_API_URL')
-emoji_arr = []
 all_emoji = [emoji.emojize(x) for x in emoji.EMOJI_DATA]
 giphy_attachments = ['mov','gif']
 
@@ -40,7 +39,7 @@ class MyClient(discord.Client):
         # set target time to 9 AM 
         target_time = datetime.time(hour=9, minute=0, second=0, microsecond=0)
 
-        # action_triggered = False
+
 
         while True:
             target_date = datetime.datetime.now(tz=est_tz).replace(hour=target_time.hour,
@@ -102,12 +101,10 @@ class MyClient(discord.Client):
         elif "sticker " in message.content:
             await message.channel.send(sticker_response(message.content.replace("sticker ", "")))
         elif any(x in message.content for x in all_emoji):
-            range_indexes = range(5)
-            for i in range_indexes:
-                emoji_arr.append(random.choice(list(emoji.EMOJI_DATA)))
-                result = ''.join(emoji_arr)
-                result = result[-5:]
-            await message.channel.send(result)
+            emoji_response = chat_response(prompt="In your response include emojis to describe how you feel about me.\n")
+            await message.channel.typing()
+            await asyncio.sleep(1)
+            await message.channel.send(f"{emoji_response}")
         # get if attachment is a .mov file or .gif file
         if message.attachments:
             if any(x in message.attachments[0].filename for x in giphy_attachments):
