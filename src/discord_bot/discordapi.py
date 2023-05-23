@@ -40,7 +40,7 @@ class MyClient(discord.Client):
         # set target time to 9 AM 
         target_time = datetime.time(hour=9)
 
-        action_triggered = False
+        # action_triggered = False
 
         while True:
             target_date = datetime.datetime.now(tz=est_tz).replace(hour=target_time.hour,
@@ -49,10 +49,10 @@ class MyClient(discord.Client):
                                                                    microsecond=0)
 
             # If target time has already passed for today, set target date to tomorrow's date with target time
-            if datetime.datetime.now(tz=est_tz) >= target_date and not action_triggered:
+            if datetime.datetime.now(tz=est_tz) >= target_date:
                 target_date += datetime.timedelta(days=1)
                 # Update flag to indicate action has been triggered
-                action_triggered = True
+                # action_triggered = True
             
             
                 # trigger the action  
@@ -62,7 +62,7 @@ class MyClient(discord.Client):
                 text_response = chat_response(prompt="Kinzie good morning!")
                 await channel.send(f"{text_response}")
 
-            # Wait until target date and time
+            # Wait until target date and time controlling how many triggers are activated
             await asyncio.sleep((target_date - datetime.datetime.now(tz=est_tz)).total_seconds())
     
     async def on_message(self, message):
