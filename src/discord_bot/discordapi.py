@@ -38,7 +38,7 @@ class MyClient(discord.Client):
         est_tz = pytz.timezone('US/Eastern')
 
         # set target time to 9 AM 
-        target_time = datetime.time(hour=9)
+        target_time = datetime.time(hour=9, minute=0, second=0, microsecond=0)
 
         # action_triggered = False
 
@@ -52,7 +52,7 @@ class MyClient(discord.Client):
             if datetime.datetime.now(tz=est_tz) >= target_date:
                 target_date += datetime.timedelta(days=1)
                 # Update flag to indicate action has been triggered
-                # action_triggered = True
+                print(target_date)
             
             
                 # trigger the action  
@@ -64,6 +64,7 @@ class MyClient(discord.Client):
 
             # Wait until target date and time controlling how many triggers are activated
             await asyncio.sleep((target_date - datetime.datetime.now(tz=est_tz)).total_seconds())
+            print("triggered")
     
     async def on_message(self, message):
         print(message.content)
