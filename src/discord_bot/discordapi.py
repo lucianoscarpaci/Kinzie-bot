@@ -40,6 +40,8 @@ class MyClient(discord.Client):
         # set target time to 9 AM 
         target_time = datetime.time(hour=9)
 
+        action_triggered = False
+
         while True:
             target_date = datetime.datetime.now(tz=est_tz).replace(hour=target_time.hour,
                                                                    minute=target_time.minute,
@@ -47,18 +49,21 @@ class MyClient(discord.Client):
                                                                    microsecond=0)
 
             # If target time has already passed for today, set target date to tomorrow's date with target time
-            if datetime.datetime.now(tz=est_tz) >= target_date:
+            if datetime.datetime.now(tz=est_tz) >= target_date and not action_triggered:
                 target_date += datetime.timedelta(days=1)
+                # Update flag to indicate action has been triggered
+                action_triggered = True
+            
+            
+                # trigger the action  
+                # get the user and create a DM to user
+                user = await client.fetch_user(discord_user_id)
+                channel = await user.create_dm()
+                text_response = chat_response(prompt="Kinzie good morning!")
+                await channel.send(f"{text_response}")
 
             # Wait until target date and time
             await asyncio.sleep((target_date - datetime.datetime.now(tz=est_tz)).total_seconds())
-            
-            # trigger the action  
-            # get the user and create a DM to user
-            user = await client.fetch_user(discord_user_id)
-            channel = await user.create_dm()
-            text_response = chat_response(prompt="Kinzie good morning!")
-            await channel.send(f"{text_response}")
     
     async def on_message(self, message):
         print(message.content)
