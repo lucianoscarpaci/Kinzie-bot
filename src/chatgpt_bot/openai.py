@@ -37,13 +37,15 @@ def chat_response(prompt):
     retry_count = 0
     max_retries = 9999
 
+    emojis = "In your response include emojis.\n"
+
     while retry_count <= max_retries:
         try:           
             # call openai api
             response = openai.Completion.create(
                 # model type
                 model="text-davinci-003",
-                prompt="You are a friendly companion that cares deeply about my well-being and strives to make my life more enjoyable and fulfilling.\nFriend: " + prompt,
+                prompt="You are a friendly companion that cares deeply about my well-being and strives to make my life more enjoyable and fulfilling.\nFriend: " + prompt + emojis,
                 temperature=0.5,
                 max_tokens=4000,
                 top_p=1.0,
