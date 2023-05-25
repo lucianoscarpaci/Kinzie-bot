@@ -101,7 +101,9 @@ class MyClient(discord.Client):
         elif "sticker " in message.content:
             await message.channel.send(sticker_response(message.content.replace("sticker ", "")))
         elif any(x in message.content for x in all_emoji):
-            emoji_response = chat_response(prompt="In your response include emojis to describe how you feel about me.\n")
+            my_message = message.content
+            print(my_message)
+            emoji_response = chat_response(prompt=my_message + "In your response include emojis to describe how you feel about me.\n")
             await message.channel.typing()
             await asyncio.sleep(1)
             await message.channel.send(f"{emoji_response}")
