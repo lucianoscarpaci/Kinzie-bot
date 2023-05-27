@@ -18,8 +18,12 @@ load_dotenv()
 discord_token = os.getenv('DISCORD_TOKEN')
 discord_user_id = os.getenv('USER_ID')
 url_token = os.getenv('GIPHY_API_URL')
+photo_dir = os.getenv('PHOTOS')
+# kinzie_photos = []
+all_kinzie_photos = os.listdir(photo_dir)
 all_emoji = [emoji.emojize(x) for x in emoji.EMOJI_DATA]
 giphy_attachments = ['mov','gif']
+
 
 
 class MyClient(discord.Client):
@@ -63,7 +67,7 @@ class MyClient(discord.Client):
 
             # Wait until target date and time controlling how many triggers are activated
             await asyncio.sleep((target_date - datetime.datetime.now(tz=est_tz)).total_seconds())
-            print("triggered")
+            
     
     async def on_message(self, message):
         print(message.content)
@@ -93,6 +97,16 @@ class MyClient(discord.Client):
             text_response = chat_response(prompt=own_message)
             await message.channel.typing()
             await asyncio.sleep(1)
+            # Kinzie photos start here
+            kinzie_photos = []
+            for photo in all_kinzie_photos:
+                filename = os.path.join(photo_dir, photo)
+                kinzie_photos.append(filename)
+            random_photo = random.choice(kinzie_photos)
+            with open(random_photo, 'rb') as f:
+                file = discord.File(f)
+            # emoji starts here
+            await message.channel.send(file=file)
             await message.channel.send(f"{text_response}")
 
         
@@ -103,8 +117,6 @@ class MyClient(discord.Client):
         elif any(x in message.content for x in all_emoji):
             my_message = message.content
             emoji_response = chat_response(prompt=my_message + "In your response include emojis to describe how you feel about me.\n")
-            await message.channel.typing()
-            await asyncio.sleep(1)
             await message.channel.send(f"{emoji_response}")
         # get if attachment is a .mov file or .gif file
         if message.attachments:
