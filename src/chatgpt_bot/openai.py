@@ -29,7 +29,12 @@ def turbo_response(prompt):
                 prompt_response = response_dict[0]["message"]["content"]
             return prompt_response
     
-        except Exception:
+        except openai.error.AuthenticationError as e:
+            print(f"Authentication failed with error: {e}")
+            retry_count += 1
+
+        except openai.error.APIError as e:
+            print(f"API request failed with error: {e}")
             retry_count += 1
 
 def chat_response(prompt):
@@ -58,8 +63,13 @@ def chat_response(prompt):
             if response_dict and len(response_dict) > 0:
                 prompt_response = response_dict[0]["text"]
             return prompt_response
+
+        except openai.error.AuthenticationError as e:
+            print(f"Authentication failed with error: {e}")
+            retry_count += 1
     
-        except Exception:
+        except openai.error.APIError as e:
+            print(f"API request failed with error: {e}")
             retry_count += 1
 
         

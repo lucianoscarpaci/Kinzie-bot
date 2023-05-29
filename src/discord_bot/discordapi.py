@@ -19,7 +19,6 @@ discord_token = os.getenv('DISCORD_TOKEN')
 discord_user_id = os.getenv('USER_ID')
 url_token = os.getenv('GIPHY_API_URL')
 photo_dir = os.getenv('PHOTOS')
-# kinzie_photos = []
 all_kinzie_photos = os.listdir(photo_dir)
 all_emoji = [emoji.emojize(x) for x in emoji.EMOJI_DATA]
 giphy_attachments = ['mov','gif']
