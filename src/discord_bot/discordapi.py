@@ -64,6 +64,7 @@ class MyClient(discord.Client):
                 channel = await user.create_dm()
                 text_response = chat_response(prompt="Kinzie good morning!")
                 await channel.send(f"{text_response}")
+                await asyncio.sleep(60)
 
             # Wait until target date and time controlling how many triggers are activated
             await asyncio.sleep((target_date - datetime.datetime.now(tz=est_tz)).total_seconds())
