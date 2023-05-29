@@ -33,7 +33,7 @@ def turbo_response(prompt):
             print(f"API request failed with error: {e}")
             retry_count += 1
 
-        except openai.error.APIError as e:
+        except openai.error.InvalidRequestError as e:
             print(f"API request failed with error: {e}")
             retry_count += 1
 
@@ -72,7 +72,7 @@ def chat_response(prompt):
             print(f"API request failed with error: {e}")
             retry_count += 1
     
-        except openai.error.APIError as e:
+        except openai.InvalidRequestError as e:
             print(f"API request failed with error: {e}")
             retry_count += 1
 
