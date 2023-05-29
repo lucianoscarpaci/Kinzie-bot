@@ -35,7 +35,6 @@ def turbo_response(prompt):
 
         except openai.error.InvalidRequestError as e:
             print(f"API request failed with error: {e}")
-            retry_count += 1
 
         except openai.error.ServiceUnavailableError as e:
             print(f"Service is unavailable with error: {e}")
