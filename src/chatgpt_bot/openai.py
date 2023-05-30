@@ -77,29 +77,29 @@ def chat_response(prompt):
         return prompt_response
 
     except openai.error.Timeout as e:
-        print(f"API request failed with error: {e}")
+        print(f"API request [Timeout] failed with error: {e}")
         pass
 
     except openai.error.APIError as e:
-        print(f"API request failed with error: {e}")
+        print(f"API request [APIError] failed with error: {e}")
         pass
 
     except openai.error.APIConnectionError as e:
-        print(f"API request failed with error: {e}")
+        print(f"API request [APIConnectionError] failed with error: {e}")
         pass
 
     except openai.error.InvalidRequestError as e:
-        print(f"API request failed with error: {e}")
+        print(f"API request [InvalidRequestError] failed with error: {e}")
         pass
 
     except openai.error.AuthenticationError as e:
-        print(f"API request failed with error: {e}")
+        print(f"API request [AuthenticationError] failed with error: {e}")
         pass
 
     except openai.error.PermissionError as e:
-        print(f"API request failed with error: {e}")
+        print(f"API request [PermissionError] failed with error: {e}")
         pass
 
     except openai.error.RateLimitError as e:
-        print(f"API request failed with error: {e}")
+        print(f"API request [RateLimitError] failed with error: {e}")
         pass
