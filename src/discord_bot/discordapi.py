@@ -64,6 +64,14 @@ class MyClient(discord.Client):
             user = await client.fetch_user(discord_user_id)
             channel = await user.create_dm()
             text_response = chat_response(prompt="Kinzie good morning!")
+            kinzie_photos = []
+            for photo in all_kinzie_photos:
+                filename = os.path.join(photo_dir, photo)
+                kinzie_photos.append(filename)
+            random_photo = random.choice(kinzie_photos)
+            with open(random_photo, 'rb') as f:
+                file = discord.File(f)
+            await channel.send(file=file)
             await channel.send(f"{text_response}")
 
             # wait for 60 seconds before checking again
