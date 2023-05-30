@@ -78,16 +78,17 @@ class MyClient(discord.Client):
             await asyncio.sleep(60)
 
     async def on_message(self, message):
-        print(message.content)
+        
+        # if the message is from the bot itself, ignore it
         if message.author == self.user:
             return
+        # used later to split the message into command and own_message
         command, own_message=None, None
 
         for text in ['kinzie', 'bot']:
             if message.content.startswith(text):
                 command=message.content.split(' ')[0]
                 own_message=message.content.replace(text, '')
-                print(command, own_message)
 
         if command == 'kinzie' or command == 'bot':
             bot_response = turbo_response(prompt=own_message)
@@ -95,17 +96,11 @@ class MyClient(discord.Client):
             await asyncio.sleep(1)
             await message.channel.send(f"{bot_response}")
 
-        for txt in ['Kinzie', 'chat']:
-            if message.content.startswith(txt):
-                command=message.content.split(' ')[0]
-                own_message=message.content.replace(txt, '')
-                print(command, own_message)
-
-        if command == 'Kinzie' or command == 'chat':
-            text_response = chat_response(prompt=own_message)
+        if message.content.endswith("。"):
+            send_message = message.content
+            text_response = chat_response(prompt=send_message)
             await message.channel.typing()
             await asyncio.sleep(1)
-            # Kinzie photos start here
             kinzie_photos = []
             for photo in all_kinzie_photos:
                 filename = os.path.join(photo_dir, photo)
@@ -113,7 +108,6 @@ class MyClient(discord.Client):
             random_photo = random.choice(kinzie_photos)
             with open(random_photo, 'rb') as f:
                 file = discord.File(f)
-            # emoji starts here
             await message.channel.send(file=file)
             await message.channel.send(f"{text_response}")
 
