@@ -20,7 +20,9 @@ def turbo_response(prompt):
             response = openai.ChatCompletion.create(
                 # model type
                 model="gpt-3.5-turbo-0301",
-                prompt=prompt,
+                messages=[
+                    {"role": "user", "content": prompt},
+                ],
                 temperature=1,
                 max_tokens=4000,
             )
