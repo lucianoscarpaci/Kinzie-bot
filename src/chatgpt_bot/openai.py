@@ -27,12 +27,31 @@ def turbo_response(prompt):
 
     except openai.error.Timeout as e:
         print(f"API request failed with error: {e}")
+        pass
 
-    except openai.InvalidRequestError as e:
+    except openai.error.APIError as e:
         print(f"API request failed with error: {e}")
+        pass
 
-    except openai.error.ServiceUnavailableError as e:
-        print(f"Service is unavailable with error: {e}")
+    except openai.error.APIConnectionError as e:
+        print(f"API request failed with error: {e}")
+        pass
+
+    except openai.error.InvalidRequestError as e:
+        print(f"API request failed with error: {e}")
+        pass
+
+    except openai.error.AuthenticationError as e:
+        print(f"API request failed with error: {e}")
+        pass
+
+    except openai.error.PermissionError as e:
+        print(f"API request failed with error: {e}")
+        pass
+
+    except openai.error.RateLimitError as e:
+        print(f"API request failed with error: {e}")
+        pass
 
 def chat_response(prompt):
 
@@ -59,11 +78,28 @@ def chat_response(prompt):
 
     except openai.error.Timeout as e:
         print(f"API request failed with error: {e}")
+        pass
 
-    except openai.InvalidRequestError as e:
+    except openai.error.APIError as e:
         print(f"API request failed with error: {e}")
+        pass
 
-    except openai.error.ServiceUnavailableError as e:
-        print(f"Service is unavailable with error: {e}")
+    except openai.error.APIConnectionError as e:
+        print(f"API request failed with error: {e}")
+        pass
 
-        
+    except openai.error.InvalidRequestError as e:
+        print(f"API request failed with error: {e}")
+        pass
+
+    except openai.error.AuthenticationError as e:
+        print(f"API request failed with error: {e}")
+        pass
+
+    except openai.error.PermissionError as e:
+        print(f"API request failed with error: {e}")
+        pass
+
+    except openai.error.RateLimitError as e:
+        print(f"API request failed with error: {e}")
+        pass
