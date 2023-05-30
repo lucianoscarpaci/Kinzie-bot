@@ -102,4 +102,4 @@ def chat_response(prompt):
 
     except openai.error.RateLimitError as e:
         print(f"API request [RateLimitError] failed with error: {e}")
-        pass
+        return chat_response(prompt="You are a friendly companion that cares deeply about my well-being and strives to make my life more enjoyable and fulfilling.\nFriend: " + emojis + prompt)
