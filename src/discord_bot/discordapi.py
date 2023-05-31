@@ -11,7 +11,6 @@ import datetime
 from src.chatgpt_bot.openai import turbo_response
 from src.chatgpt_bot.openai import chat_response
 from src.giphy_bot.giphy import gif_response
-from src.giphy_bot.giphy import sticker_response
 
 
 load_dotenv()
@@ -63,7 +62,7 @@ class MyClient(discord.Client):
             # get the user and create a DM to user
             user = await client.fetch_user(discord_user_id)
             channel = await user.create_dm()
-            text_response = chat_response(prompt="Kinzie good morning!")
+            text_response = chat_response(prompt="Good morning!。")
             kinzie_photos = []
             for photo in all_kinzie_photos:
                 filename = os.path.join(photo_dir, photo)
@@ -111,11 +110,8 @@ class MyClient(discord.Client):
             await message.channel.send(file=file)
             await message.channel.send(f"{text_response}")
 
-        
-        if "Giphy " in message.content:
-            await message.channel.send(gif_response(message.content.replace("Giphy ", "")))
-        elif "sticker " in message.content:
-            await message.channel.send(sticker_response(message.content.replace("sticker ", "")))
+        if message.content.endswith("°"):
+            await message.channel.send(gif_response(message.content.replace("°", "")))
         elif any(x in message.content for x in all_emoji):
             my_message = message.content
             emoji_response = chat_response(prompt=my_message + "In your response include emojis to describe how you feel about me.\n")
@@ -136,19 +132,9 @@ class MyClient(discord.Client):
             await message.channel.send(query_string)
 
 
-
-
-
-
-    
-    
-
-
 intents = discord.Intents.default()
 intents.message_content = True
 
 client = MyClient(intents=intents)
 
-
-        
 
