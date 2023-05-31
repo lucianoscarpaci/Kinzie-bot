@@ -81,15 +81,12 @@ class MyClient(discord.Client):
         # if the message is from the bot itself, ignore it
         if message.author == self.user:
             return
-        # used later to split the message into command and own_message
-        command, own_message=None, None
+        
+        if message.content.startswith("show keys"):
+            await message.channel.send("```⁇: Turbo Response\n。: Chat Response\n°: Gif Response\n```")
 
-        for text in ['kinzie', 'bot']:
-            if message.content.startswith(text):
-                command=message.content.split(' ')[0]
-                own_message=message.content.replace(text, '')
-
-        if command == 'kinzie' or command == 'bot':
+        if message.content.endswith("⁇"):
+            own_message = message.content.replace("⁇", "")
             bot_response = turbo_response(prompt=own_message)
             await message.channel.typing()
             await asyncio.sleep(1)
@@ -111,7 +108,8 @@ class MyClient(discord.Client):
             await message.channel.send(f"{text_response}")
 
         if message.content.endswith("°"):
-            await message.channel.send(gif_response(message.content.replace("°", "")))
+            gif_message = message.content.replace("°", "")
+            await message.channel.send(gif_response(gif_message))
         elif any(x in message.content for x in all_emoji):
             my_message = message.content
             emoji_response = chat_response(prompt=my_message + "In your response include emojis to describe how you feel about me.\n")
