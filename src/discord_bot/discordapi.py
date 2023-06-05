@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+from kaomoji import kaomoji
 import discord
 import os
 import asyncio
@@ -19,9 +20,6 @@ discord_user_id = os.getenv('USER_ID')
 url_token = os.getenv('GIPHY_API_URL')
 photo_dir = os.getenv('PHOTOS')
 all_kinzie_photos = os.listdir(photo_dir)
-all_emoji = [emoji.emojize(x) for x in emoji.EMOJI_DATA]
-giphy_attachments = ['mov','gif']
-
 
 
 class MyClient(discord.Client):
@@ -81,7 +79,7 @@ class MyClient(discord.Client):
         # if the message is from the bot itself, ignore it
         if message.author == self.user:
             return
-        
+
         if message.content.startswith("show keys"):
             await message.channel.send("```⁇: Turbo Response\n。: Chat Response\n°: Gif Response\n```")
 
@@ -110,11 +108,22 @@ class MyClient(discord.Client):
         if message.content.endswith("°"):
             gif_message = message.content.replace("°", "")
             await message.channel.send(gif_response(gif_message))
-        elif any(x in message.content for x in all_emoji):
+        # emoji section
+        all_emoji = [emoji.emojize(x) for x in emoji.EMOJI_DATA]
+        if any(x in message.content for x in all_emoji):
             my_message = message.content
             emoji_response = chat_response(prompt=my_message + "In your response include emojis to describe how you feel about me.\n")
             await message.channel.send(f"{emoji_response}")
+        # kaomoji section
+        kao = kaomoji.Kaomoji()
+        all_kaomoji = [x for x in kao.all_kaomoji()]
+        if any(x in message.content for x in all_kaomoji):
+            kaomoji_message = message.content
+            # testing kaomoji response
+            kaomoji_response = chat_response(prompt=kaomoji_message + "In your response include one kaomoji to express how you feel about me.\n")
+            await message.channel.send(f"{kaomoji_response}")
         # get if attachment is a .mov file or .gif file
+        giphy_attachments = ['mov','gif']
         if message.attachments:
             if any(x in message.attachments[0].filename for x in giphy_attachments):
                 meme_url = url_token

@@ -4,3 +4,5 @@ python-dotenv==0.21.0
 requests==2.25.1
 giphy_client==1.0.0
 emoji==2.2.0
+py-kaomoji==0.1.3.6
+pyyaml==6.0
