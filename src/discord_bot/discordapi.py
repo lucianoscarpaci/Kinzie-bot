@@ -12,14 +12,14 @@ import datetime
 from src.chatgpt_bot.openai import turbo_response
 from src.chatgpt_bot.openai import chat_response
 from src.giphy_bot.giphy import gif_response
-
-
 load_dotenv()
 discord_token = os.getenv('DISCORD_TOKEN')
 discord_user_id = os.getenv('USER_ID')
 url_token = os.getenv('GIPHY_API_URL')
 photo_dir = os.getenv('PHOTOS')
 all_kinzie_photos = os.listdir(photo_dir)
+emoji_mode = False
+kaomoji_mode = False
 
 
 class MyClient(discord.Client):
@@ -75,13 +75,31 @@ class MyClient(discord.Client):
             await asyncio.sleep(60)
 
     async def on_message(self, message):
-        
+        global emoji_mode, kaomoji_mode
         # if the message is from the bot itself, ignore it
         if message.author == self.user:
             return
 
-        if message.content.startswith("show keys"):
-            await message.channel.send("```⁇: Turbo Response\n。: Chat Response\n°: Gif Response\n```")
+        if message.content.lower().startswith("!emoji"):
+            emoji_mode = not emoji_mode
+            embed = discord.Embed(title=f"Emoji mode is now {'on' if emoji_mode else 'off'}", color=0xffc0cb)
+            await message.channel.send(embed=embed)
+            return
+
+        if message.content.lower().startswith("!kaomoji"):
+            kaomoji_mode = not kaomoji_mode
+            embed = discord.Embed(title=f"Kaomoji mode is now {'on' if kaomoji_mode else 'off'}", color=0xffc0cb)
+            await message.channel.send(embed=embed)
+            return
+
+        if message.content.startswith("!help"):
+            embed = discord.Embed(title="Commands", description="Commands for this bot", color=0xffc0cb)
+            embed.add_field(name="⁇", value="Turbo Response", inline=False)
+            embed.add_field(name="。", value="Chat Response", inline=False)
+            embed.add_field(name="°", value="Gif Response", inline=False)
+            embed.add_field(name="!emoji", value="Emoji mode", inline=False)
+            embed.add_field(name="!kaomoji", value="Kaomoji mode", inline=False)
+            await message.channel.send(embed=embed)
 
         if message.content.endswith("⁇"):
             own_message = message.content.replace("⁇", "")
@@ -110,19 +128,16 @@ class MyClient(discord.Client):
             await message.channel.send(gif_response(gif_message))
         # emoji section
         all_emoji = [emoji.emojize(x) for x in emoji.EMOJI_DATA]
-        if any(x in message.content for x in all_emoji):
+        if emoji_mode and any(x in message.content for x in all_emoji):
             my_message = message.content
             emoji_response = chat_response(prompt=my_message + "In your response include emojis to describe how you feel about me.\n")
             await message.channel.send(f"{emoji_response}")
         # kaomoji section
         kao = kaomoji.Kaomoji()
         all_kaomoji = [x for x in kao.all_kaomoji()]
-        if any(x in message.content for x in all_kaomoji):
-            kaomoji_message = message.content
-            # testing kaomoji response
-            kaomoji_response = chat_response(prompt=kaomoji_message + "In your response include one kaomoji to express how you feel about me.\n")
+        if kaomoji_mode and any(x in message.content for x in all_kaomoji):
+            kaomoji_response = chat_response(prompt="In your response include one kaomoji to express how you feel about me.\n")
             await message.channel.send(f"{kaomoji_response}")
-        # get if attachment is a .mov file or .gif file
         giphy_attachments = ['mov','gif']
         if message.attachments:
             if any(x in message.attachments[0].filename for x in giphy_attachments):
