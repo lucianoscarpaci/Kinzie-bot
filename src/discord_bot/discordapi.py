@@ -94,11 +94,12 @@ class MyClient(discord.Client):
 
         if message.content.startswith("!help"):
             embed = discord.Embed(title="Commands", description="Commands for this bot", color=0xffc0cb)
-            embed.add_field(name="⁇", value="Turbo Response", inline=False)
-            embed.add_field(name="。", value="Chat Response", inline=False)
-            embed.add_field(name="°", value="Gif Response", inline=False)
-            embed.add_field(name="!emoji", value="Emoji mode", inline=False)
-            embed.add_field(name="!kaomoji", value="Kaomoji mode", inline=False)
+            embed.add_field(name="Web browser", value="Search", inline=False)
+            embed.add_field(name="Turbo Response", value="⁇", inline=False) 
+            embed.add_field(name="Chat Response", value="。", inline=False)
+            embed.add_field(name="Gif Response", value="°", inline=False)
+            embed.add_field(name="Emoji mode", value="!emoji", inline=False) 
+            embed.add_field(name="Kaomoji mode", value="!kaomoji", inline=False)
             await message.channel.send(embed=embed)
 
         if message.content.endswith("⁇"):
