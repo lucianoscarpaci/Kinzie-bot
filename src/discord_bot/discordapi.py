@@ -26,7 +26,7 @@ class MyClient(discord.Client):
     async def on_ready(self):
         print("login successful, you are: ", self.user)
 
-        await self.change_presence(activity=discord.Game(name="Saints Row: The Third"), status=discord.Status.online)
+        await self.change_presence(activity=discord.Game(name="Shibuya, Tokyo, Japan"), status=discord.Status.online)
 
         # start the background task to check the time
         client.loop.create_task(self.check_time())
