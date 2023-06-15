@@ -80,7 +80,7 @@ class MyClient(discord.Client):
 
     async def on_message(self, message):
         global emoji_mode, kaomoji_mode
-        timeout = 10
+        timeout = 300
         # if the message is from the bot itself, ignore it
         if message.author == self.user:
             return
