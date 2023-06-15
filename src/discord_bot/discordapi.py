@@ -80,6 +80,7 @@ class MyClient(discord.Client):
 
     async def on_message(self, message):
         global emoji_mode, kaomoji_mode
+        timeout = 10
         # if the message is from the bot itself, ignore it
         if message.author == self.user:
             return
@@ -95,6 +96,18 @@ class MyClient(discord.Client):
             embed = discord.Embed(title=f"Kaomoji mode is now {'on' if kaomoji_mode else 'off'}", color=0xffc0cb)
             await message.channel.send(embed=embed)
             return
+            
+        try:
+            await self.wait_for('message', timeout=timeout)
+        except asyncio.TimeoutError:
+            if emoji_mode:
+                emoji_mode = not emoji_mode
+                embed = discord.Embed(title=f"Emoji mode is now {'on' if emoji_mode else 'off'}", color=0xffc0cb)
+                await message.channel.send(embed=embed)
+            if kaomoji_mode:
+                kaomoji_mode = not kaomoji_mode
+                embed = discord.Embed(title=f"Kaomoji mode is now {'on' if kaomoji_mode else 'off'}", color=0xffc0cb)
+                await message.channel.send(embed=embed)
 
         if message.content.startswith("!help"):
             embed = discord.Embed(title="Commands", description="Commands for this bot", color=0xffc0cb)
