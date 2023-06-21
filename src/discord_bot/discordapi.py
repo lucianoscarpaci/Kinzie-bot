@@ -28,10 +28,12 @@ class MyClient(discord.Client):
 
         await self.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="Shibuya, Tokyo, Japan"), status=discord.Status.online)
 
-        # start the background task to check the time
-        client.loop.create_task(self.check_time())
+        # start the background task to send good morning
+        client.loop.create_task(self.morning_message())
+        # start the background task to send hello message
+        client.loop.create_task(self.hello_message())
 
-    async def check_time(self):
+    async def morning_message(self):
 
         # set the timezone to US Eastern Time
         est_tz = pytz.timezone('US/Eastern')
@@ -77,6 +79,47 @@ class MyClient(discord.Client):
                 good_morning = True
                 # sleep for 60 seconds to prevent the task from running again
                 await asyncio.sleep(60)
+    
+    async def hello_message(self):
+
+        # set the timezone to US/Eastern Time
+        est_tz = pytz.timezone('US/Eastern')
+
+        # set the beginning time, 9:20 AM EST tomorrow
+        start_time = datetime.time(hour=9, minute=20, second=0, microsecond=0)
+        start_date = datetime.datetime.now(tz=est_tz) + datetime.timedelta(days=1)
+        start_date = start_date.replace(hour=start_time.hour, minute=start_time.minute, second=start_time.second, microsecond=0)
+
+        # set the end time, 6:00 PM EST
+        end_time = datetime.time(hour=18, minute=0, second=0, microsecond=0)
+        end_date = datetime.datetime.now(tz=est_tz)
+        end_date = end_date.replace(hour=end_time.hour, minute=end_time.minute, second=end_time.second, microsecond=0)
+        # set the flag to false
+        greeting_message = False
+
+        while start_date <= end_date:
+
+            # Wait until target time is reached
+            # start date or dt ?
+            reached = asyncio.sleep((start_date - datetime.datetime.now(tz=est_tz)).total_seconds())
+            await reached
+
+            if reached and not greeting_message:
+                # trigger the action
+                user = await client.fetch_user(discord_user_id)
+                channel = await user.create_dm()
+                text_response = chat_response(prompt="Tell me all the sweet nothings. I could really use some support and love right now. 。")
+                kinzie_photos = []
+                for photo in all_kinzie_photos:
+                    filename = os.path.join(photo_dir, photo)
+                    kinzie_photos.append(filename)
+                random_photo = random.choice(kinzie_photos)
+                with open(random_photo, 'rb') as f:
+                    file = discord.File(f)
+                await channel.send(file=file)
+                await channel.send(f"{text_response}")
+                greeting_message = True
+                await asyncio.sleep(1200)
 
     async def on_message(self, message):
         global emoji_mode, kaomoji_mode
