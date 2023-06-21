@@ -99,8 +99,12 @@ class MyClient(discord.Client):
 
         while start_date <= end_date:
 
-            # Wait until target time is reached
+            
             # start date or dt ?
+            if datetime.datetime.now(tz=est_tz) >= start_date:
+                greeting_message = False
+                
+            # Wait until target time is reached
             reached = asyncio.sleep((start_date - datetime.datetime.now(tz=est_tz)).total_seconds())
             await reached
 
