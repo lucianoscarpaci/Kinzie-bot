@@ -85,27 +85,33 @@ class MyClient(discord.Client):
         # set the timezone to US/Eastern Time
         est_tz = pytz.timezone('US/Eastern')
 
-        # set the beginning time, 9:20 AM EST tomorrow
-        start_time = datetime.time(hour=9, minute=20, second=0, microsecond=0)
-        start_date = datetime.datetime.now(tz=est_tz) + datetime.timedelta(days=1)
-        start_date = start_date.replace(hour=start_time.hour, minute=start_time.minute, second=start_time.second, microsecond=0)
+        # set the beginning time
+        start_time = datetime.datetime.now(tz=est_tz).time()
 
-        # set the end time, 6:00 PM EST
-        end_time = datetime.time(hour=18, minute=0, second=0, microsecond=0)
-        end_date = datetime.datetime.now(tz=est_tz)
-        end_date = end_date.replace(hour=end_time.hour, minute=end_time.minute, second=end_time.second, microsecond=0)
+        # set the end time
+        end_time = datetime.time(hour=20, minute=0, second=0, microsecond=0)
+
+        dt = datetime.datetime.combine(datetime.date.today(), start_time)
+        end_dt = datetime.datetime.combine(datetime.date.today(), end_time)
+
         # set the flag to false
         greeting_message = False
 
-        while start_date <= end_date:
+        while dt <= end_dt:
 
             
             # start date or dt ?
-            if datetime.datetime.now(tz=est_tz) >= start_date:
+            startx_date = datetime.datetime.now(tz=est_tz).replace(hour=start_time.hour,
+                                                                   minute=start_time.minute,
+                                                                   second=start_time.second,
+                                                                   microsecond=0)
+            if datetime.datetime.now(tz=est_tz) >= startx_date:
+                dt += datetime.timedelta(hours=10)
+                print(dt.time())
                 greeting_message = False
                 
             # Wait until target time is reached
-            reached = asyncio.sleep((start_date - datetime.datetime.now(tz=est_tz)).total_seconds())
+            reached = asyncio.sleep((startx_date - datetime.datetime.now(tz=est_tz)).total_seconds())
             await reached
 
             if reached and not greeting_message:
@@ -123,7 +129,7 @@ class MyClient(discord.Client):
                 await channel.send(file=file)
                 await channel.send(f"{text_response}")
                 greeting_message = True
-                await asyncio.sleep(1200)
+                await asyncio.sleep(36000)
 
     async def on_message(self, message):
         global emoji_mode, kaomoji_mode
