@@ -86,10 +86,10 @@ class MyClient(discord.Client):
         est_tz = pytz.timezone('US/Eastern')
 
         # set the beginning time
-        start_time = datetime.datetime.now(tz=est_tz).time()
+        start_time = datetime.time(hour=0, minute=0, second=0, microsecond=0)
 
         # set the end time
-        end_time = datetime.time(hour=20, minute=0, second=0, microsecond=0)
+        end_time = datetime.time(hour=23, minute=59, second=59, microsecond=0)
 
         dt = datetime.datetime.combine(datetime.date.today(), start_time)
         end_dt = datetime.datetime.combine(datetime.date.today(), end_time)
@@ -97,17 +97,21 @@ class MyClient(discord.Client):
         # set the flag to false
         greeting_message = False
 
-        while dt <= end_dt:
+        while True:
 
-            
-            # start date or dt ?
+            if datetime.datetime.now(tz=est_tz).time() > end_time:
+                end_dt += datetime.timedelta(days=1)
+
             startx_date = datetime.datetime.now(tz=est_tz).replace(hour=start_time.hour,
                                                                    minute=start_time.minute,
                                                                    second=start_time.second,
                                                                    microsecond=0)
             if datetime.datetime.now(tz=est_tz) >= startx_date:
+                if dt.time() >= datetime.time(hour=20, minute=0, second=0, microsecond=0):
+                    dt += datetime.timedelta(hours=28)
+                elif dt.time() >= datetime.time(hour=10, minute=0, second=0, microsecond=0):
+                    dt += datetime.timedelta(hours=28)
                 dt += datetime.timedelta(hours=10)
-                print(dt.time())
                 greeting_message = False
                 
             # Wait until target time is reached
