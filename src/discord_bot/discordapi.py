@@ -203,7 +203,8 @@ class MyClient(discord.Client):
 
         if message.content.endswith("。"):
             send_message = message.content
-            text_response = chat_response(prompt=send_message)
+            emoji_response = chat_response(prompt=send_message + "In your response include emojis to describe how you feel about me.\n")
+            text_response = chat_response(prompt=send_message + "In your response include words.\n")
             await message.channel.typing()
             await asyncio.sleep(1)
             kinzie_photos = []
@@ -214,6 +215,7 @@ class MyClient(discord.Client):
             with open(random_photo, 'rb') as f:
                 file = discord.File(f)
             await message.channel.send(file=file)
+            await message.channel.send(f"{emoji_response}")
             await message.channel.send(f"{text_response}")
 
         if message.content.endswith("°"):

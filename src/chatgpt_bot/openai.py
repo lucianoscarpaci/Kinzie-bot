@@ -43,11 +43,11 @@ def turbo_response(prompt):
 
 def chat_response(prompt):
 
-    emojis = "In your response include emojis.\n"
-
     # program needs to have prevention from a timeout to openAI
     retry_count = 0
     max_retries = 9999
+
+    emojis = "In your response include emojis.\n"
 
     while retry_count <= max_retries:
         try:
