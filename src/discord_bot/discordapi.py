@@ -28,58 +28,9 @@ class MyClient(discord.Client):
 
         await self.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="Shibuya, Tokyo, Japan"), status=discord.Status.online)
 
-        # start the background task to send good morning
-        client.loop.create_task(self.morning_message())
         # start the background task to send hello message
         client.loop.create_task(self.hello_message())
-
-    async def morning_message(self):
-
-        # set the timezone to US Eastern Time
-        est_tz = pytz.timezone('US/Eastern')
-
-        # set target time to 9 AM 
-        target_time = datetime.time(hour=9, minute=0, second=0, microsecond=0)
-
-        # good morning flag set to false
-        good_morning = False
-
-        while True:
-            target_date = datetime.datetime.now(tz=est_tz).replace(hour=target_time.hour,
-                                                                   minute=target_time.minute,
-                                                                   second=target_time.second,
-                                                                   microsecond=0)
-
-            if datetime.datetime.now(tz=est_tz) >= target_date:
-                target_date += datetime.timedelta(days=1)
-                print(target_date)
-                good_morning = False
-                print("good_morning =", good_morning)
-
-            # Wait until target time is reached
-            reached = asyncio.sleep((target_date - datetime.datetime.now(tz=est_tz)).total_seconds())
-            await reached
-
-            if reached and not good_morning:
-                # trigger the action
-                # get the user and create a DM to user
-                user = await client.fetch_user(discord_user_id)
-                channel = await user.create_dm()
-                text_response = chat_response(prompt="Good morning!。")
-                kinzie_photos = []
-                for photo in all_kinzie_photos:
-                    filename = os.path.join(photo_dir, photo)
-                    kinzie_photos.append(filename)
-                random_photo = random.choice(kinzie_photos)
-                with open(random_photo, 'rb') as f:
-                    file = discord.File(f)
-                await channel.send(file=file)
-                await channel.send(f"{text_response}")
-                # good morning flag set to true
-                good_morning = True
-                # sleep for 60 seconds to prevent the task from running again
-                await asyncio.sleep(60)
-    
+        
     async def hello_message(self):
 
         # set the timezone to US/Eastern Time
