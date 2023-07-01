@@ -30,7 +30,7 @@ class MyClient(discord.Client):
 
         # start the background task to send hello message
         client.loop.create_task(self.hello_message())
-        
+
     async def hello_message(self):
 
         # set the timezone to US/Eastern Time
@@ -154,7 +154,7 @@ class MyClient(discord.Client):
 
         if message.content.endswith("。"):
             send_message = message.content
-            emoji_response = chat_response(prompt=send_message + "In your response include emojis to describe how you feel about me.\n")
+            emoji_response = chat_response(prompt=send_message + "In your response only use emojis to describe how you feel about me.\n")                   
             text_response = chat_response(prompt=send_message + "In your response include words.\n")
             await message.channel.typing()
             await asyncio.sleep(1)
