@@ -137,7 +137,7 @@ class MyClient(discord.Client):
         
         if message.content.startswith("!help"):
             embed = discord.Embed(title="Commands", description="Commands for this bot", color=0xffc0cb)
-            embed.add_field(name="Web browser", value="Search", inline=False)
+            embed.add_field(name="Web browser", value="!search", inline=False)
             embed.add_field(name="Turbo Response", value="⁇", inline=False) 
             embed.add_field(name="Chat Response", value="。", inline=False)
             embed.add_field(name="Gif Response", value="°", inline=False)
@@ -175,7 +175,7 @@ class MyClient(discord.Client):
         
         
         giphy_attachments = ['mov','gif']
-        if message.attachments:
+        if message.attachments and message.content.startswith("!anime"):
             if any(x in message.attachments[0].filename for x in giphy_attachments):
                 meme_url = url_token
                 response = requests.get(meme_url)
