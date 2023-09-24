@@ -75,7 +75,7 @@ class MyClient(discord.Client):
                 user = await client.fetch_user(discord_user_id)
                 channel = await user.create_dm()
                 text_response = chat_response(
-                    prompt="Tell me all the sweet nothings. I could really use some support and love right now. 。")
+                    prompt="Tell me all the sweet nothings. I could really use some support and love right now.")
                 kinzie_photos = []
                 for photo in all_kinzie_photos:
                     filename = os.path.join(photo_dir, photo)
@@ -172,14 +172,6 @@ class MyClient(discord.Client):
                 prompt=send_message + "In your response include words.\n")
             await message.channel.typing()
             await asyncio.sleep(1)
-            kinzie_photos = []
-            for photo in all_kinzie_photos:
-                filename = os.path.join(photo_dir, photo)
-                kinzie_photos.append(filename)
-            random_photo = random.choice(kinzie_photos)
-            with open(random_photo, 'rb') as f:
-                file = discord.File(f)
-            await message.channel.send(file=file)
             await message.channel.send(f"{emoji_response}")
             await message.channel.send(f"{text_response}")
 
