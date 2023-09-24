@@ -75,7 +75,7 @@ class MyClient(discord.Client):
                 user = await client.fetch_user(discord_user_id)
                 channel = await user.create_dm()
                 text_response = chat_response(
-                    prompt="Tell me all the sweet nothings. I could really use some support and love right now.")
+                    prompt="Tell me all the sweet nothings. I could really use some support and love right now.\n")
                 kinzie_photos = []
                 for photo in all_kinzie_photos:
                     filename = os.path.join(photo_dir, photo)
