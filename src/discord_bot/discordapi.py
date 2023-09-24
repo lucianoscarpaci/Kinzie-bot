@@ -64,16 +64,18 @@ class MyClient(discord.Client):
                     dt += datetime.timedelta(hours=28)
                 dt += datetime.timedelta(hours=10)
                 greeting_message = False
-                
+
             # Wait until target time is reached
-            reached = asyncio.sleep((startx_date - datetime.datetime.now(tz=est_tz)).total_seconds())
+            reached = asyncio.sleep(
+                (startx_date - datetime.datetime.now(tz=est_tz)).total_seconds())
             await reached
 
             if reached and not greeting_message:
                 # trigger the action
                 user = await client.fetch_user(discord_user_id)
                 channel = await user.create_dm()
-                text_response = chat_response(prompt="Tell me all the sweet nothings. I could really use some support and love right now. 。")
+                text_response = chat_response(
+                    prompt="Tell me all the sweet nothings. I could really use some support and love right now. 。")
                 kinzie_photos = []
                 for photo in all_kinzie_photos:
                     filename = os.path.join(photo_dir, photo)
@@ -95,54 +97,64 @@ class MyClient(discord.Client):
 
         if message.content.lower().startswith("!emoji"):
             emoji_mode = not emoji_mode
-            embed = discord.Embed(title=f"Emoji mode is now {'on' if emoji_mode else 'off'}", color=0xffc0cb)
+            embed = discord.Embed(
+                title=f"Emoji mode is now {'on' if emoji_mode else 'off'}", color=0xffc0cb)
             await message.channel.send(embed=embed)
         else:
             try:
                 all_emoji = [emoji.emojize(x) for x in emoji.EMOJI_DATA]
                 if emoji_mode and any(x in message.content for x in all_emoji):
                     my_message = message.content
-                    emoji_response = chat_response(prompt=my_message + "In your response include emojis to describe how you feel about me.\n")
+                    emoji_response = chat_response(
+                        prompt=my_message + "In your response include emojis to describe how you feel about me.\n")
                     await message.channel.send(f"{emoji_response}")
                     await self.wait_for('message', timeout=timeout)
             except asyncio.TimeoutError:
                 if emoji_mode:
                     emoji_mode = False
-                    embed = discord.Embed(title=f"Emoji mode is now {'on' if emoji_mode else 'off'}", color=0xffc0cb)
+                    embed = discord.Embed(
+                        title=f"Emoji mode is now {'on' if emoji_mode else 'off'}", color=0xffc0cb)
                     await message.channel.send(embed=embed)
                     kaomoji_mode = False
-                    embed = discord.Embed(title=f"Kaomoji mode is now {'on' if kaomoji_mode else 'off'}", color=0xffc0cb)
+                    embed = discord.Embed(
+                        title=f"Kaomoji mode is now {'on' if kaomoji_mode else 'off'}", color=0xffc0cb)
                     await message.channel.send(embed=embed)
 
         if message.content.lower().startswith("!kaomoji"):
             kaomoji_mode = not kaomoji_mode
-            embed = discord.Embed(title=f"Kaomoji mode is now {'on' if kaomoji_mode else 'off'}", color=0xffc0cb)
+            embed = discord.Embed(
+                title=f"Kaomoji mode is now {'on' if kaomoji_mode else 'off'}", color=0xffc0cb)
             await message.channel.send(embed=embed)
         else:
             try:
                 kao = kaomoji.Kaomoji()
                 all_kaomoji = [x for x in kao.all_kaomoji()]
                 if kaomoji_mode and any(x in message.content for x in all_kaomoji):
-                    kaomoji_response = chat_response(prompt="In your response include one kaomoji to express how you feel about me.\n")
+                    kaomoji_response = chat_response(
+                        prompt="In your response include one kaomoji to express how you feel about me.\n")
                     await message.channel.send(f"{kaomoji_response}")
                     await self.wait_for('message', timeout=timeout)
             except asyncio.TimeoutError:
                 if kaomoji_mode:
                     kaomoji_mode = False
-                    embed = discord.Embed(title=f"Kaomoji mode is now {'on' if kaomoji_mode else 'off'}", color=0xffc0cb)
+                    embed = discord.Embed(
+                        title=f"Kaomoji mode is now {'on' if kaomoji_mode else 'off'}", color=0xffc0cb)
                     await message.channel.send(embed=embed)
                     emoji_mode = False
-                    embed = discord.Embed(title=f"Emoji mode is now {'on' if emoji_mode else 'off'}", color=0xffc0cb)
+                    embed = discord.Embed(
+                        title=f"Emoji mode is now {'on' if emoji_mode else 'off'}", color=0xffc0cb)
                     await message.channel.send(embed=embed)
-        
+
         if message.content.startswith("!help"):
-            embed = discord.Embed(title="Commands", description="Commands for this bot", color=0xffc0cb)
+            embed = discord.Embed(
+                title="Commands", description="Commands for this bot", color=0xffc0cb)
             embed.add_field(name="Web browser", value="!search", inline=False)
-            embed.add_field(name="Turbo Response", value="⁇", inline=False) 
+            embed.add_field(name="Turbo Response", value="⁇", inline=False)
             embed.add_field(name="Chat Response", value="。", inline=False)
             embed.add_field(name="Gif Response", value="°", inline=False)
-            embed.add_field(name="Emoji mode", value="!emoji", inline=False) 
-            embed.add_field(name="Kaomoji mode", value="!kaomoji", inline=False)
+            embed.add_field(name="Emoji mode", value="!emoji", inline=False)
+            embed.add_field(name="Kaomoji mode",
+                            value="!kaomoji", inline=False)
             await message.channel.send(embed=embed)
 
         if message.content.endswith("⁇"):
@@ -154,8 +166,10 @@ class MyClient(discord.Client):
 
         if message.content.endswith("。"):
             send_message = message.content
-            emoji_response = chat_response(prompt=send_message + "In your response only use emojis to describe how you feel about me.\n")                   
-            text_response = chat_response(prompt=send_message + "In your response include words.\n")
+            emoji_response = chat_response(
+                prompt=send_message + "In your response only use emojis to describe how you feel about me.\n")
+            text_response = chat_response(
+                prompt=send_message + "In your response include words.\n")
             await message.channel.typing()
             await asyncio.sleep(1)
             kinzie_photos = []
@@ -172,9 +186,8 @@ class MyClient(discord.Client):
         if message.content.endswith("°"):
             gif_message = message.content.replace("°", "")
             await message.channel.send(gif_response(gif_message))
-        
-        
-        giphy_attachments = ['mov','gif']
+
+        giphy_attachments = ['mov', 'gif']
         if message.attachments and message.content.startswith("!anime"):
             if any(x in message.attachments[0].filename for x in giphy_attachments):
                 meme_url = url_token
@@ -183,10 +196,11 @@ class MyClient(discord.Client):
                 await message.channel.send(response)
             else:
                 print("There is no attachment")
-        
+
         if message.content.startswith("Search"):
             query = message.content[7:]
-            query_string = 'https://duckduckgo.com/?q=' + '+'.join(query.split())
+            query_string = 'https://duckduckgo.com/?q=' + \
+                '+'.join(query.split())
             await message.channel.send(query_string)
 
 
@@ -194,5 +208,3 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 client = MyClient(intents=intents)
-
-
