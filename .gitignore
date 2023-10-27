@@ -4,3 +4,7 @@ src/chatgpt_bot/__pycache__/
 src/discord_bot/__pycache__/
 src/giphy_bot/__pycache__/
 src/giphy_bot/__pycache__/giphy.cpython-310.pyc
+*.pyc
+src/giphy_bot/__pycache__/__init__.cpython-310.pyc
+src/giphy_bot/__pycache__/giphy.cpython-310.pyc
+src/giphy_bot/__pycache__/__init__.cpython-310.pyc

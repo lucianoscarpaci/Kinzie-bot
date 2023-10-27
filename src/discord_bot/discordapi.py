@@ -102,13 +102,13 @@ class MyClient(discord.Client):
             await message.channel.send(embed=embed)
         else:
             try:
-                all_emoji = [emoji.emojize(x) for x in emoji.EMOJI_DATA]
-                if emoji_mode and any(x in message.content for x in all_emoji):
-                    my_message = message.content
-                    emoji_response = chat_response(
-                        prompt=my_message + "In your response include emojis to describe how you feel about me.\n")
-                    await message.channel.send(f"{emoji_response}")
-                    await self.wait_for('message', timeout=timeout)
+                #all_emoji = [emoji.emojize(x) for x in emoji.EMOJI_DATA]
+                #if emoji_mode and any(x in message.content for x in all_emoji):
+                    #my_message = message.content
+                    #emoji_response = chat_response(
+                        #prompt=my_message + "In your response include emojis to describe how you feel about me.\n")
+                    #await message.channel.send(f"{emoji_response}")
+                    #await self.wait_for('message', timeout=timeout)
             except asyncio.TimeoutError:
                 if emoji_mode:
                     emoji_mode = False

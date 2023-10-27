@@ -55,7 +55,7 @@ def chat_response(prompt):
             response = openai.Completion.create(
                 # model type
                 model="text-davinci-003",
-                prompt="You are a friendly companion that cares deeply about my well-being and strives to make my life more enjoyable and fulfilling.\nFriend: " + emojis + prompt,
+                prompt="Wubby: You are a friendly companion that cares deeply about my well-being and strives to make my life more enjoyable and fulfilling.\nFriend: " + emojis + prompt,
                 temperature=0.5,
                 max_tokens=4000,
                 top_p=1.0,
@@ -70,9 +70,9 @@ def chat_response(prompt):
             return prompt_response
 
         except openai.error.InvalidRequestError as e:
-            print(f"API request [InvalidRequestError] failed with error: {e}")           
+            print(f"API request [InvalidRequestError] failed with error: {e}")
             smiley = emoji.emojize(":smiling_face_with_smiling_eyes:")
             return chat_response(prompt=smiley)
-        
+
         except Exception:
             retry_count += 1
