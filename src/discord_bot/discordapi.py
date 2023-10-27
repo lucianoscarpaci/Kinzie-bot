@@ -26,7 +26,7 @@ class MyClient(discord.Client):
     async def on_ready(self):
         print("login successful, you are: ", self.user)
 
-        await self.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="Shibuya, Tokyo, Japan"), status=discord.Status.online)
+        await self.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="Shibuya, Tokyo, Japan 🌸🗼🇯🇵"), status=discord.Status.online)
 
         # start the background task to send hello message
         client.loop.create_task(self.hello_message())
