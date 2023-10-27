@@ -95,31 +95,6 @@ class MyClient(discord.Client):
         if message.author == self.user:
             return
 
-        if message.content.lower().startswith("!emoji"):
-            emoji_mode = not emoji_mode
-            embed = discord.Embed(
-                title=f"Emoji mode is now {'on' if emoji_mode else 'off'}", color=0xffc0cb)
-            await message.channel.send(embed=embed)
-        else:
-            try:
-                #all_emoji = [emoji.emojize(x) for x in emoji.EMOJI_DATA]
-                #if emoji_mode and any(x in message.content for x in all_emoji):
-                    #my_message = message.content
-                    #emoji_response = chat_response(
-                        #prompt=my_message + "In your response include emojis to describe how you feel about me.\n")
-                    #await message.channel.send(f"{emoji_response}")
-                    #await self.wait_for('message', timeout=timeout)
-            except asyncio.TimeoutError:
-                if emoji_mode:
-                    emoji_mode = False
-                    embed = discord.Embed(
-                        title=f"Emoji mode is now {'on' if emoji_mode else 'off'}", color=0xffc0cb)
-                    await message.channel.send(embed=embed)
-                    kaomoji_mode = False
-                    embed = discord.Embed(
-                        title=f"Kaomoji mode is now {'on' if kaomoji_mode else 'off'}", color=0xffc0cb)
-                    await message.channel.send(embed=embed)
-
         if message.content.lower().startswith("!kaomoji"):
             kaomoji_mode = not kaomoji_mode
             embed = discord.Embed(
@@ -152,7 +127,6 @@ class MyClient(discord.Client):
             embed.add_field(name="Turbo Response", value="⁇", inline=False)
             embed.add_field(name="Chat Response", value="。", inline=False)
             embed.add_field(name="Gif Response", value="°", inline=False)
-            embed.add_field(name="Emoji mode", value="!emoji", inline=False)
             embed.add_field(name="Kaomoji mode",
                             value="!kaomoji", inline=False)
             await message.channel.send(embed=embed)
