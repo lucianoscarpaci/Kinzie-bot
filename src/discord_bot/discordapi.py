@@ -176,7 +176,7 @@ class MyClient(discord.Client):
 
         channel = self.get_channel(payload.channel_id)
         message = await channel.fetch_message(payload.message_id)
-        bears_and_hearts = chat_response(prompt="Send bear and heart emojis 。")
+        bears_and_hearts = chat_response(prompt="Send bears and hearts" + "In your response only use emojis to describe how you feel about me.\n")
 
         if message.author == self.user:
             await message.channel.send(f"{bears_and_hearts}")
