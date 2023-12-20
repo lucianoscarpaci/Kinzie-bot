@@ -169,8 +169,21 @@ class MyClient(discord.Client):
                 '+'.join(query.split())
             await message.channel.send(query_string)
 
+    async def on_raw_reaction_add(self, payload):
+        if payload.user_id == self.user:
+            print("A reaction was added by the bot")
+            return
+
+        channel = self.get_channel(payload.channel_id)
+        message = await channel.fetch_message(payload.message_id)
+        bears_and_hearts = chat_response(prompt="Send bear and heart emojis 。")
+
+        if message.author == self.user:
+            await message.channel.send(f"{bears_and_hearts}")
+
 
 intents = discord.Intents.default()
 intents.message_content = True
+intents.reactions = True
 
 client = MyClient(intents=intents)
