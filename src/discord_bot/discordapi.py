@@ -24,7 +24,9 @@ kaomoji_mode = False
 
 class MyClient(discord.Client):
     async def on_ready(self):
-        print("login successful, you are: ", self.user)
+        user = await client.fetch_user(client.user.id)
+        await self.user.edit(username="Wubby")
+        print(f"Hello {self.user} It's good to see you again.")
 
         await self.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="Shibuya, Tokyo, Japan 🌸🗼🇯🇵"), status=discord.Status.online)
 
