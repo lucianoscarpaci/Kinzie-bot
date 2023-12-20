@@ -176,10 +176,14 @@ class MyClient(discord.Client):
 
         channel = self.get_channel(payload.channel_id)
         message = await channel.fetch_message(payload.message_id)
-        bears_and_hearts = chat_response(prompt="Send bears and hearts" + "In your response only use emojis to describe how you feel about me.\n")
+        describe_me = "In your response only use emojis to describe how you feel about me.\n"
+        options = ["Send bears and hearts", "Send rainbow hearts", "Send sunshine and laughter", "Send joy and happiness",
+                   "Send flowers and rainbows", "Send love and hugs", "Send hearts and kisses", "Send love and joy", "Send love and happiness", "Send love and sunshine"]
+        prompt = random.choice(options) + describe_me
+        response = chat_response(prompt=prompt)
 
         if message.author == self.user:
-            await message.channel.send(f"{bears_and_hearts}")
+            await message.channel.send(f"{response}")
 
 
 intents = discord.Intents.default()
