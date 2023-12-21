@@ -147,21 +147,17 @@ class MyClient(discord.Client):
             text_response = chat_response(
                 prompt=send_message + "In your response include words.\n")
 
-            await message.channel.send(f"{emoji_response}")
-
             finished = None
 
-            for i in range(0, 2):
-
+            for i in range(0, 1):
                 animate_text = text_response[:i]
-                animate_text = animate_text[:1] + \
-                    '漢字文漢字文化日本語際特殊符号!@#$%^&*_+化日本語漢字文漢字文化日本語際特殊符号!@#$%^&*_+化日本漢字文化日本語際特殊符号!@#$%^&*_+語際特殊符号!@#$%^&*_+際特殊符号!@#$%^&*_+'
+                animate_text = animate_text[:1] + emoji_response
 
                 if finished is not None:
-
                     await finished.delete()
 
                 finished = await message.channel.send(animate_text)
+                await asyncio.sleep(1)
             await finished.delete()
             await message.channel.send(f"{text_response}")
 
