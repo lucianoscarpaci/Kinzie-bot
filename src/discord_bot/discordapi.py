@@ -146,10 +146,22 @@ class MyClient(discord.Client):
                 prompt=send_message + "In your response only use emojis to describe how you feel about me.\n")
             text_response = chat_response(
                 prompt=send_message + "In your response include words.\n")
-            await message.channel.typing()
-            await asyncio.sleep(1)
+
             await message.channel.send(f"{emoji_response}")
-            await message.channel.send(f"{text_response}")
+
+            finished = None
+
+            for i in range(0, 2):
+                animate_text = text_response[:i]
+                animate_text = animate_text[:1] + ' '
+                animate_text += text_response.replace(animate_text, '')
+
+                if finished is not None:
+
+                    await finished.edit(content=animate_text)
+                    await finished.delete()
+
+                finished = await message.channel.send(animate_text)
 
         if message.content.endswith("°"):
             gif_message = message.content.replace("°", "")
