@@ -152,16 +152,18 @@ class MyClient(discord.Client):
             finished = None
 
             for i in range(0, 2):
+
                 animate_text = text_response[:i]
-                animate_text = animate_text[:1] + ' '
-                animate_text += text_response.replace(animate_text, '')
+                animate_text = animate_text[:1] + \
+                    '漢字文漢字文化日本語際特殊符号!@#$%^&*_+化日本語漢字文漢字文化日本語際特殊符号!@#$%^&*_+化日本漢字文化日本語際特殊符号!@#$%^&*_+語際特殊符号!@#$%^&*_+際特殊符号!@#$%^&*_+'
 
                 if finished is not None:
 
-                    await finished.edit(content=animate_text)
                     await finished.delete()
 
                 finished = await message.channel.send(animate_text)
+            await finished.delete()
+            await message.channel.send(f"{text_response}")
 
         if message.content.endswith("°"):
             gif_message = message.content.replace("°", "")
