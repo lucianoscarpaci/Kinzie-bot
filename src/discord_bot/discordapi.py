@@ -11,11 +11,10 @@ import pytz
 import datetime
 from src.chatgpt_bot.openai import turbo_response
 from src.chatgpt_bot.openai import chat_response
-from src.giphy_bot.giphy import gif_response
+import subprocess
 load_dotenv()
 discord_token = os.getenv('DISCORD_TOKEN')
 discord_user_id = os.getenv('USER_ID')
-url_token = os.getenv('GIPHY_API_URL')
 photo_dir = os.getenv('PHOTOS')
 all_kinzie_photos = os.listdir(photo_dir)
 emoji_mode = False
@@ -128,9 +127,7 @@ class MyClient(discord.Client):
             embed.add_field(name="Web browser", value="!search", inline=False)
             embed.add_field(name="Turbo Response", value="⁇", inline=False)
             embed.add_field(name="Chat Response", value="。", inline=False)
-            embed.add_field(name="Gif Response", value="°", inline=False)
-            embed.add_field(name="Kaomoji mode",
-                            value="!kaomoji", inline=False)
+            embed.add_field(name="Kaomoji mode", value="!kaomoji", inline=False)
             await message.channel.send(embed=embed)
 
         if message.content.endswith("⁇"):
@@ -157,25 +154,21 @@ class MyClient(discord.Client):
             await finished.delete()
             await message.channel.send(f"{text_response}")
 
-        if message.content.endswith("°"):
-            gif_message = message.content.replace("°", "")
-            await message.channel.send(gif_response(gif_message))
-
-        giphy_attachments = ['mov', 'gif']
-        if message.attachments and message.content.startswith("!anime"):
-            if any(x in message.attachments[0].filename for x in giphy_attachments):
-                meme_url = url_token
-                response = requests.get(meme_url)
-                response = json.loads(response.text)["data"]["url"]
-                await message.channel.send(response)
-            else:
-                print("There is no attachment")
-
         if message.content.startswith("Search"):
             query = message.content[7:]
             query_string = 'https://duckduckgo.com/?q=' + \
                 '+'.join(query.split())
             await message.channel.send(query_string)
+
+        if message.content.startswith("!wubbies"):
+
+            game = subprocess.Popen(
+                ["python3", "-c", "from src.game_bot.game import HowManyWubbies; HowManyWubbies.player_start()"], stdout=subprocess.PIPE)
+            game = game.communicate()
+            #
+            game = game[0].decode("UTF-8")
+
+            await message.channel.send(f'{game}')
 
     async def on_raw_reaction_add(self, payload):
         if payload.user_id == self.user:
