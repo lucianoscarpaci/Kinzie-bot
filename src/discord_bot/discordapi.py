@@ -147,8 +147,6 @@ class MyClient(discord.Client):
             text_response = chat_response(
                 prompt=send_message + "In your response include words.\n")
 
-            #finished = None
-
             for i in range(0, 1):
                 animate_text = text_response[:i]
                 animate_text = animate_text[:1] + emoji_response
