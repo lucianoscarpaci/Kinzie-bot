@@ -147,17 +147,15 @@ class MyClient(discord.Client):
             text_response = chat_response(
                 prompt=send_message + "In your response include words.\n")
 
-            finished = None
+            #finished = None
 
             for i in range(0, 1):
                 animate_text = text_response[:i]
                 animate_text = animate_text[:1] + emoji_response
 
-                if finished is not None:
-                    await finished.delete()
-
                 finished = await message.channel.send(animate_text)
                 await asyncio.sleep(1)
+
             await finished.delete()
             await message.channel.send(f"{text_response}")
 
