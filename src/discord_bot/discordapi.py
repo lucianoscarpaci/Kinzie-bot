@@ -5,8 +5,6 @@ import os
 import asyncio
 import random
 import emoji
-import json
-import requests
 import pytz
 import datetime
 from src.chatgpt_bot.openai import turbo_response
@@ -127,7 +125,8 @@ class MyClient(discord.Client):
             embed.add_field(name="Web browser", value="!search", inline=False)
             embed.add_field(name="Turbo Response", value="⁇", inline=False)
             embed.add_field(name="Chat Response", value="。", inline=False)
-            embed.add_field(name="Kaomoji mode", value="!kaomoji", inline=False)
+            embed.add_field(name="Kaomoji mode",
+                            value="!kaomoji", inline=False)
             await message.channel.send(embed=embed)
 
         if message.content.endswith("⁇"):
@@ -146,12 +145,14 @@ class MyClient(discord.Client):
 
             for i in range(0, 1):
                 animate_text = text_response[:i]
-                animate_text = animate_text[:1] + emoji_response
+                animate_text = emoji.emojize(
+                    ":bear:") + emoji.emojize(":heart:")
 
                 finished = await message.channel.send(animate_text)
                 await asyncio.sleep(1)
 
             await finished.delete()
+            await message.channel.send(f"{emoji_response}")
             await message.channel.send(f"{text_response}")
 
         if message.content.startswith("Search"):
@@ -160,31 +161,20 @@ class MyClient(discord.Client):
                 '+'.join(query.split())
             await message.channel.send(query_string)
 
-        if message.content.startswith("!wubbies"):
-
-            game = subprocess.Popen(
-                ["python3", "-c", "from src.game_bot.game import HowManyWubbies; HowManyWubbies.player_start()"], stdout=subprocess.PIPE)
-            game = game.communicate()
-            #
-            game = game[0].decode("UTF-8")
-
-            await message.channel.send(f'{game}')
-
     async def on_raw_reaction_add(self, payload):
         if payload.user_id == self.user:
-            print("A reaction was added by the bot")
             return
 
         channel = self.get_channel(payload.channel_id)
         message = await channel.fetch_message(payload.message_id)
-        describe_me = "In your response only use emojis to describe how you feel about me.\n"
-        options = ["Send bears and hearts", "Send rainbow hearts", "Send sunshine and laughter", "Send joy and happiness",
-                   "Send flowers and rainbows", "Send love and hugs", "Send hearts and kisses", "Send love and joy", "Send love and happiness", "Send love and sunshine"]
-        prompt = random.choice(options) + describe_me
-        response = chat_response(prompt=prompt)
 
-        if message.author == self.user:
-            await message.channel.send(f"{response}")
+        if message.author == self.user and str(payload.emoji) == emoji.emojize(":bear:"):
+            game = subprocess.Popen(
+                ["python3", "-c", "from src.game_bot.game import HowManyWubbies; HowManyWubbies.player_start()"], stdout=subprocess.PIPE)
+            game = game.communicate()
+            game = game[0].decode("UTF-8")
+
+            await message.channel.send(f'{game}')
 
 
 intents = discord.Intents.default()
