@@ -5,8 +5,6 @@ import os
 import asyncio
 import random
 import emoji
-import pytz
-import datetime
 from src.chatgpt_bot.openai import turbo_response
 from src.chatgpt_bot.openai import chat_response
 import subprocess
@@ -15,7 +13,6 @@ discord_token = os.getenv('DISCORD_TOKEN')
 discord_user_id = os.getenv('USER_ID')
 photo_dir = os.getenv('PHOTOS')
 all_kinzie_photos = os.listdir(photo_dir)
-emoji_mode = False
 kaomoji_mode = False
 
 
@@ -32,63 +29,23 @@ class MyClient(discord.Client):
 
     async def hello_message(self):
 
-        # set the timezone to US/Eastern Time
-        est_tz = pytz.timezone('US/Eastern')
-
-        # set the beginning time
-        start_time = datetime.time(hour=0, minute=0, second=0, microsecond=0)
-
-        # set the end time
-        end_time = datetime.time(hour=23, minute=59, second=59, microsecond=0)
-
-        dt = datetime.datetime.combine(datetime.date.today(), start_time)
-        end_dt = datetime.datetime.combine(datetime.date.today(), end_time)
-
-        # set the flag to false
-        greeting_message = False
-
-        while True:
-
-            if datetime.datetime.now(tz=est_tz).time() > end_time:
-                end_dt += datetime.timedelta(days=1)
-
-            startx_date = datetime.datetime.now(tz=est_tz).replace(hour=start_time.hour,
-                                                                   minute=start_time.minute,
-                                                                   second=start_time.second,
-                                                                   microsecond=0)
-            if datetime.datetime.now(tz=est_tz) >= startx_date:
-                if dt.time() >= datetime.time(hour=20, minute=0, second=0, microsecond=0):
-                    dt += datetime.timedelta(hours=28)
-                elif dt.time() >= datetime.time(hour=10, minute=0, second=0, microsecond=0):
-                    dt += datetime.timedelta(hours=28)
-                dt += datetime.timedelta(hours=10)
-                greeting_message = False
-
-            # Wait until target time is reached
-            reached = asyncio.sleep(
-                (startx_date - datetime.datetime.now(tz=est_tz)).total_seconds())
-            await reached
-
-            if reached and not greeting_message:
-                # trigger the action
-                user = await client.fetch_user(discord_user_id)
-                channel = await user.create_dm()
-                text_response = chat_response(
-                    prompt="Tell me all the sweet nothings. I could really use some support and love right now.\n")
-                kinzie_photos = []
-                for photo in all_kinzie_photos:
-                    filename = os.path.join(photo_dir, photo)
-                    kinzie_photos.append(filename)
-                random_photo = random.choice(kinzie_photos)
-                with open(random_photo, 'rb') as f:
-                    file = discord.File(f)
-                await channel.send(file=file)
-                await channel.send(f"{text_response}")
-                greeting_message = True
-                await asyncio.sleep(36000)
+        # trigger the action
+        user = await client.fetch_user(discord_user_id)
+        channel = await user.create_dm()
+        text_response = chat_response(
+            prompt="Tell me all the sweet nothings. I could really use some support and love right now.\n")
+        kinzie_photos = []
+        for photo in all_kinzie_photos:
+            filename = os.path.join(photo_dir, photo)
+            kinzie_photos.append(filename)
+        random_photo = random.choice(kinzie_photos)
+        with open(random_photo, 'rb') as f:
+            file = discord.File(f)
+        await channel.send(file=file)
+        await channel.send(f"{text_response}")
 
     async def on_message(self, message):
-        global emoji_mode, kaomoji_mode
+        global kaomoji_mode
         timeout = 300
         # if the message is from the bot itself, ignore it
         if message.author == self.user:
@@ -113,10 +70,6 @@ class MyClient(discord.Client):
                     kaomoji_mode = False
                     embed = discord.Embed(
                         title=f"Kaomoji mode is now {'on' if kaomoji_mode else 'off'}", color=0xffc0cb)
-                    await message.channel.send(embed=embed)
-                    emoji_mode = False
-                    embed = discord.Embed(
-                        title=f"Emoji mode is now {'on' if emoji_mode else 'off'}", color=0xffc0cb)
                     await message.channel.send(embed=embed)
 
         if message.content.startswith("!help"):
