@@ -17,6 +17,7 @@ kaomoji_mode = False
 
 
 class MyClient(discord.Client):
+
     async def on_ready(self):
         user = await client.fetch_user(client.user.id)
         await self.user.edit(username="Wubby")
