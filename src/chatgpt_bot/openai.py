@@ -19,7 +19,7 @@ def turbo_response(prompt):
             # call openai api
             response = openai.ChatCompletion.create(
                 # model type
-                model="gpt-3.5-turbo-0301",
+                model="gpt-3.5-turbo-0613",
                 messages=[
                     {"role": "user", "content": prompt},
                 ],
