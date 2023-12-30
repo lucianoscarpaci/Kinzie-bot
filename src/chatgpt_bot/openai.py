@@ -56,11 +56,11 @@ def chat_response(prompt):
                 # model type
                 model="gpt-3.5-turbo-instruct",
                 prompt="Wubby: You are a friendly companion that cares deeply about my well-being and strives to make my life more enjoyable and fulfilling.\nFriend: " + emojis + prompt,
-                temperature=0.5,
-                max_tokens=4000,
-                top_p=1.0,
-                frequency_penalty=0.5,
-                presence_penalty=0.0,
+                temperature=0.8,
+                max_tokens=100,
+                top_p=0.9,
+                frequency_penalty=0.2,
+                presence_penalty=0.2,
                 stop=None,
             )
 
