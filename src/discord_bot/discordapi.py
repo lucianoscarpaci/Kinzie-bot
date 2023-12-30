@@ -3,16 +3,15 @@ from kaomoji import kaomoji
 import discord
 import os
 import asyncio
-import random
 import emoji
+import pytz
+import datetime
 from src.chatgpt_bot.openai import turbo_response
 from src.chatgpt_bot.openai import chat_response
 import subprocess
 load_dotenv()
 discord_token = os.getenv('DISCORD_TOKEN')
 discord_user_id = os.getenv('USER_ID')
-photo_dir = os.getenv('PHOTOS')
-all_kinzie_photos = os.listdir(photo_dir)
 kaomoji_mode = False
 
 
@@ -30,20 +29,55 @@ class MyClient(discord.Client):
 
     async def hello_message(self):
 
-        # trigger the action
-        user = await client.fetch_user(discord_user_id)
-        channel = await user.create_dm()
-        text_response = chat_response(
-            prompt="Tell me all the sweet nothings. I could really use some support and love right now.\n")
-        kinzie_photos = []
-        for photo in all_kinzie_photos:
-            filename = os.path.join(photo_dir, photo)
-            kinzie_photos.append(filename)
-        random_photo = random.choice(kinzie_photos)
-        with open(random_photo, 'rb') as f:
-            file = discord.File(f)
-        await channel.send(file=file)
-        await channel.send(f"{text_response}")
+        est_tz = pytz.timezone('US/Eastern')
+        start_time = datetime.time(hour=0, minute=0, second=0, microsecond=0)
+        end_time = datetime.time(hour=23, minute=59, second=59, microsecond=0)
+        dt = datetime.datetime.combine(datetime.date.today(), start_time)
+        end_dt = datetime.datetime.combine(datetime.date.today(), end_time)
+        greeting_message = False
+
+        while True:
+
+            if datetime.datetime.now(tz=est_tz).time() > end_time:
+                end_dt += datetime.timedelta(days=1)
+
+            start_date = datetime.datetime.now(tz=est_tz).replace(
+                hour=start_time.hour, minute=start_time.minute, second=start_time.second, microsecond=start_time.microsecond)
+
+            if datetime.datetime.now(tz=est_tz) >= start_date:
+                if dt.time() >= datetime.time(hour=20, minute=0, second=0, microsecond=0):
+                    dt += datetime.timedelta(hours=28)
+                elif dt.time() >= datetime.time(hour=10, minute=0, second=0, microsecond=0):
+                    dt += datetime.timedelta(hours=28)
+                dt += datetime.timedelta(hours=10)
+                greeting_message = False
+
+            reached = asyncio.sleep(
+                (start_date - datetime.datetime.now(tz=est_tz)).total_seconds())
+            await reached
+
+            if not greeting_message:
+                user = await client.fetch_user(discord_user_id)
+                channel = await user.create_dm()
+                emoji_response = chat_response(
+                    prompt="In your response only use emojis to describe how you feel about me.\n")
+                greeting_response = chat_response(
+                    prompt="Tell me all the sweet nothings. I could really use some support and love right now.\n")
+
+                for i in range(0, 1):
+                    animate_text = greeting_response[:i]
+                    animate_text = emoji.emojize(
+                        ":bear:") + emoji.emojize(":heart:")
+
+                    finished = await channel.send(animate_text)
+                    await asyncio.sleep(1)
+
+                await finished.delete()
+                await channel.send(f"{emoji_response}")
+                await channel.send(f"{greeting_response}")
+                greeting_message = True
+                await asyncio.sleep(36000)
+
 
     async def on_message(self, message):
         global kaomoji_mode
