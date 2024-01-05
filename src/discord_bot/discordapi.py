@@ -60,9 +60,9 @@ class MyClient(discord.Client):
                 user = await client.fetch_user(discord_user_id)
                 channel = await user.create_dm()
                 emoji_response = chat_response(
-                    prompt="In your response only use emojis to describe how you feel about me.\n")
+                    prompt="In your response only use emojis to describe how you feel about me.\n", max_tokens=7, temperature=0.8, top_p=0.9, frequency_penalty=0.2, presence_penalty=0.2)
                 greeting_response = chat_response(
-                    prompt="Tell me all the sweet nothings. I could really use some support and love right now.\n")
+                    prompt="Tell me all the sweet nothings. I could really use some support and love right now.\n", max_tokens=50, temperature=0.8, top_p=0.9, frequency_penalty=0.2, presence_penalty=0.2)
 
                 for i in range(0, 1):
                     animate_text = greeting_response[:i]
@@ -77,7 +77,6 @@ class MyClient(discord.Client):
                 await channel.send(f"{greeting_response}")
                 greeting_message = True
                 await asyncio.sleep(36000)
-
 
     async def on_message(self, message):
         global kaomoji_mode
@@ -97,7 +96,7 @@ class MyClient(discord.Client):
                 all_kaomoji = [x for x in kao.all_kaomoji()]
                 if kaomoji_mode and any(x in message.content for x in all_kaomoji):
                     kaomoji_response = chat_response(
-                        prompt="In your response include one kaomoji to express how you feel about me.\n")
+                        prompt="In your response include one kaomoji to express how you feel about me.\n", max_tokens=4, temperature=0.2, top_p=0.5, frequency_penalty=0.0, presence_penalty=0.0)
                     await message.channel.send(f"{kaomoji_response}")
                     await self.wait_for('message', timeout=timeout)
             except asyncio.TimeoutError:
@@ -127,9 +126,9 @@ class MyClient(discord.Client):
         if message.content.endswith("。"):
             send_message = message.content
             emoji_response = chat_response(
-                prompt=send_message + "In your response only use emojis to describe how you feel about me.\n")
+                prompt=send_message + "In your response only use emojis to describe how you feel about me.\n", max_tokens=7, temperature=0.8, top_p=0.9, frequency_penalty=0.2, presence_penalty=0.2)
             text_response = chat_response(
-                prompt=send_message + "In your response include words.\n")
+                prompt=send_message + "In your response include words.\n", max_tokens=50, temperature=0.8, top_p=0.9, frequency_penalty=0.2, presence_penalty=0.2)
 
             for i in range(0, 1):
                 animate_text = text_response[:i]
