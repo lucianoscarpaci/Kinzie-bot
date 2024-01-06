@@ -160,7 +160,7 @@ class MyClient(discord.Client):
                 ["python3", "-c", "from src.game_bot.game import HowManyWubbies; HowManyWubbies.player_start()"], stdout=subprocess.PIPE)
             game = game.communicate()
             game = game[0].decode("UTF-8")
-
+            await message.channel.send("Starting game...")
             await message.channel.send(f'{game}')
 
 
