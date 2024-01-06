@@ -63,7 +63,7 @@ class MyClient(discord.Client):
                 emoji_response = chat_response(
                     prompt="In your response only use emojis to describe how you feel about me.\n", max_tokens=7, temperature=0.8, top_p=0.9, frequency_penalty=0.2, presence_penalty=0.2)
                 greeting_response = chat_response(
-                    prompt="Tell me all the sweet nothings. I could really use some support and love right now.\n", max_tokens=100, temperature=0.8, top_p=0.9, frequency_penalty=0.2, presence_penalty=0.2)
+                    prompt="Tell me all the sweet nothings. I could really use some support and love right now.\n", max_tokens=110, temperature=0.8, top_p=0.9, frequency_penalty=0.2, presence_penalty=0.2)
 
                 for i in range(0, 1):
                     animate_text = greeting_response[:i]

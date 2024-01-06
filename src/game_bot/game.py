@@ -5,17 +5,18 @@ import emoji
 class HowManyWubbies(TwoPlayerGame):
     def __init__(self, players):
         self.players = players
-        self.num_wubbies = 20
+        self.num_wubbies = 5
         self.current_player = 1
 
     def possible_moves(self):
         bear_emoji = "🐻"
-        max_bear_emojis = 3  # Maximum number of bear emojis that can be sent as a move
+        max_bear_emojis = 1  # Maximum number of bear emojis that can be sent as a move
         return [bear_emoji * i for i in range(1, min(max_bear_emojis + 1, self.num_wubbies + 1))]
 
     def make_move(self, move):
         bear_emoji = "🐻"
         num_bear_emojis = move.count(bear_emoji)
+        # old code
         self.num_wubbies -= num_bear_emojis
 
     def win(self):
@@ -28,7 +29,10 @@ class HowManyWubbies(TwoPlayerGame):
         return self.win()
 
     def show(self):
-        print(emoji.emojize(":bear:") * self.num_wubbies)
+
+        for i in range(self.num_wubbies):
+            print(" " * (self.num_wubbies - i) +
+                  emoji.emojize(":bear:") * (1 * i + 1))
 
     @staticmethod
     def player_start():
