@@ -39,6 +39,7 @@ class HowManyWubbies(TwoPlayerGame):
         ai_algo = Negamax(8)
         game = HowManyWubbies([AI_Player(ai_algo), AI_Player(ai_algo)])
         game.current_player = 2
+        print(" ")
         result = game.play()
         print("Game Over " + emoji.emojize(":ghost:") +
               " No more Wubbies " + emoji.emojize(":bear:"))
