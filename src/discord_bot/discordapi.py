@@ -96,8 +96,9 @@ class MyClient(discord.Client):
                 kao = kaomoji.Kaomoji()
                 all_kaomoji = [x for x in kao.all_kaomoji()]
                 if kaomoji_mode and any(x in message.content for x in all_kaomoji):
-                    kaomoji_response = random.choice(all_kaomoji)
-                    await message.channel.send(f"{kaomoji_response}")
+                    for i in range (0, 2):
+                        kaomoji_response = emoji.emojize(":bear:") + emoji.emojize(":heart:")
+                        await message.channel.send(f"{kaomoji_response}")
                     await self.wait_for('message', timeout=timeout)
             except asyncio.TimeoutError:
                 if kaomoji_mode:
