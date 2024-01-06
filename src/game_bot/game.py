@@ -5,7 +5,7 @@ import emoji
 class HowManyWubbies(TwoPlayerGame):
     def __init__(self, players):
         self.players = players
-        self.num_wubbies = 5
+        self.num_wubbies = 4
         self.current_player = 1
 
     def possible_moves(self):
