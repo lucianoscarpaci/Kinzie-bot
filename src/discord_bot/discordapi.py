@@ -20,7 +20,7 @@ class MyClient(discord.Client):
 
     async def on_ready(self):
         user = await client.fetch_user(client.user.id)
-        await self.user.edit(username="Wubby")
+        await self.user.edit(username="Wubby🐼🍪")
         print(f"Hello {self.user} It's good to see you again.")
 
         await self.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="Shibuya, Tokyo, Japan 🌸🗼🇯🇵"), status=discord.Status.online)
@@ -134,7 +134,7 @@ class MyClient(discord.Client):
             for i in range(0, 1):
                 animate_text = text_response[:i]
                 animate_text = emoji.emojize(
-                    ":bear:") + emoji.emojize(":heart:")
+                    ":women_with_bunny_ears_partying:") + emoji.emojize(":two_hearts:")
 
                 finished = await message.channel.send(animate_text)
                 await asyncio.sleep(1)
